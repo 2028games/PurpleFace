@@ -1,0 +1,11 @@
+sfx = 1.0 
+unlocked = 11 
+downloaded_levels_dir = 'downloaded' 
+keypad_scale = 1.5 
+show_keypad = False 
+debug_mode = True 
+music = 0.6 
+blue_speed = 8 
+levels_won = ['Levels/new.tmx', 'Levels/level08.tmx', 'Levels/level13.tmx', 'Levels/level01.tmx', 'Levels\\level14.tmx', 'Levels/level02.tmx', 'Levels/level03.tmx', 'Levels/level04.tmx', 'Levels/level05.tmx', 'Levels/level06.tmx', 'Levels/level07.tmx', 'Levels/level09.tmx', 'Levels/level10.tmx', 'Levels\\level01.tmx'] 
+level_download_dir = 'https://raw.githubusercontent.com/2028games/BlueFace_levels/master/' 
+quality = True 
