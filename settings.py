@@ -33,7 +33,7 @@ class Settings(tsoliasgame.settings.Settings):
         self.set("sfx", 1.0)  # sfx volume
         self.set("music", 0.4)  # bgm volume
         self.set("downloaded_levels_dir", "downloaded")  # dir where new levels are stored
-        self.set("level_download_dir", "https://raw.githubusercontent.com/2028games/skipper_levels/master/")  # url to check for levels to download
+        self.set("level_download_dir", "https://raw.githubusercontent.com/2028games/PurpleFace_levels/master/")  # url to check for levels to download
         if progress:
             self.set("unlocked", 1)  # number of unlocked levels
             self.set("levels_won", [])  # list of won levels
