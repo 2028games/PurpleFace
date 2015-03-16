@@ -103,7 +103,7 @@ class MainMenuController(Controller):
     def draw(self, surface):
         surface.fill(self.back_color)
         if self.mode == 1:
-            help_dialogs.story((maingame.size[0] / 2, maingame.size[1] / 2 - 200), surface, "Welcome to PurpleFace!")
+            help_dialogs.story(surface, (maingame.size[0] / 2, maingame.size[1] / 2 - 200), "Welcome to PurpleFace!")
 
             if self.blink >= 0:
                 tsoliasgame.draw_text(surface, fonts.font_26, "Click anywhere to continue!",
@@ -146,7 +146,7 @@ class MainMenuController(Controller):
 
     def action_help(self, pos):
         if self.mode == 0:
-            maingame.controller = LevelSelectionController()  # TODO: fix item
+            maingame.controller = HelpController()  # TODO: fix item
 
     def action_options(self, pos):
         if self.mode == 0:
@@ -612,8 +612,86 @@ class OptionsController(Controller):
         maingame.controller = maingame.previous_controller.__class__()
 
 
+class HelpController(Controller):
+    """controls help screen"""
+    def __init__(self):
+        Controller.__init__(self)
+        maingame.paused = True
+        self.menu_position = (10, 100)
+        self.dialog_position = (maingame.size[1] / 2 + 260, 20)
+        self.buttons = tsoliasgame.ButtonGroup()  # buttons group
+        self.back_color = tsoliasgame.colors.dodgerblue
+        self.focus = 0  # focused item
+        self.frame = 0
+
+        # make the menu items list
+        # its a list of 2 strings (1st is menu item, 2nd is name of function to call)
+        self.items = (
+            ("Story", "story"),
+            ("Controls", "controls"),
+            ("More Info", "more_info"),
+            ("Items I", "itemsi"),
+            ("Items II", "itemsii"))
+
+        # and create a big button
+        button = tsoliasgame.Button(self.action_menu, rect=pygame.Rect(
+            self.menu_position[0], self.menu_position[1], 150, 40 * len(self.items) - 1))
+        self.buttons.add(button)
+
+        mixer.music.stop()
+
+    def event_handling(self):
+        """handles pygame events"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # if x clicked
+                maingame.exit()  # exit
+
+            elif event.type == pygame.KEYDOWN:  # keydowns
+                if event.key == pygame.K_ESCAPE:
+                    self.action_back(None)  # go back
+
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.buttons.handle_clicks(event.pos)
+
+    def draw(self, surface):
+        surface.fill(self.back_color)
+        self.frame += 1
+
+        # draw the side menu
+        for i in range(len(self.items)):
+            color = tsoliasgame.colors.gray
+            if i == self.focus:
+                color = tsoliasgame.colors.white
+
+            tsoliasgame.draw_text(surface, fonts.font_26, self.items[i][0],
+                                  (self.menu_position[0], self.menu_position[1] + 40 * i), color)
+
+        pygame.draw.line(surface, tsoliasgame.colors.white, (self.menu_position[0] + 150, 0), (self.menu_position[0] + 150, maingame.size[1]), 4)
+
+        getattr(help_dialogs, self.items[self.focus][1])(surface, self.dialog_position, frame=self.frame)
+
+    def action_menu(self, pos):
+        self.focus = (pos[1] - self.menu_position[1]) / 40
+
+    @staticmethod
+    def action_back(pos):
+        maingame.controller = maingame.previous_controller.__class__()
+
+
 class GameplayController(Controller):
     """controls main gameplay and level system"""
+    @property
+    def camera_locked(self):
+        return bool(maingame.levels.view.following)
+
+    @camera_locked.setter
+    def camera_locked(self, value):
+        if not self.camera_locked and value:
+            maingame.levels.view.following = self.__previous_following
+
+        else:
+            self.__previous_following = maingame.levels.view.following
+            maingame.levels.view.following = None
         
     def __init__(self):
         Controller.__init__(self)
@@ -682,6 +760,8 @@ class GameplayController(Controller):
                     self.pause_menu.key_down(event)
                 elif event.key == pygame.K_r:
                     maingame.levels.restart_current()
+                elif event.key == pygame.K_l:
+                    self.camera_locked = not self.camera_locked
                 # jump level keys - ONLY IN DEBUG MODE
                 elif maingame.debug_mode:
                     if event.key == pygame.K_PAGEDOWN:
@@ -717,6 +797,21 @@ class GameplayController(Controller):
                 elif not (self.keypad and self.keypad.mouse_up(event)):
                     objs.TeleporterActive.mouse_up(event)
                     self.view_changing = False
+
+        if not maingame.paused and not self.camera_locked:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_w]:
+                pos = maingame.levels.view.position
+                maingame.levels.view.position = (pos[0], pos[1] - 8)
+            elif keys[pygame.K_s]:
+                pos = maingame.levels.view.position
+                maingame.levels.view.position = (pos[0], pos[1] + 8)
+            elif keys[pygame.K_a]:
+                pos = maingame.levels.view.position
+                maingame.levels.view.position = (pos[0] - 8, pos[1])
+            elif keys[pygame.K_d]:
+                pos = maingame.levels.view.position
+                maingame.levels.view.position = (pos[0] + 8, pos[1])
 
         if not (self.keypad and self.keypad.used):  # if no virtual key was pressed
             objs.Purple.handle_keyboard()  # handle the keyboard to move Purple
@@ -836,19 +931,7 @@ class VirtualKeypad(object):
         
 
 class Hud(object):
-    @property
-    def camera_locked(self):
-        return bool(maingame.levels.view.following)
-        
-    @camera_locked.setter
-    def camera_locked(self, value):
-        if not self.camera_locked and value:
-            maingame.levels.view.following = self.__previous_following
 
-        else:
-            self.__previous_following = maingame.levels.view.following
-            maingame.levels.view.following = None
-        
     def __init__(self, position, starting_controller):
         self.position = position
 
@@ -865,7 +948,7 @@ class Hud(object):
         
     def draw(self, surface):
         surface.blit(self.background, self.position)
-        if self.camera_locked:
+        if maingame.controller.camera_locked:
             surface.blit(self.padlock_closed, (self.position[0] + 74, self.position[1] + 8))
         else:
             surface.blit(self.padlock_open, (self.position[0] + 74, self.position[1] + 8))
@@ -877,8 +960,9 @@ class Hud(object):
     def action_pause(pos):
         maingame.paused = not maingame.paused
 
-    def action_padlock(self, pos):
-        self.camera_locked = not self.camera_locked
+    @staticmethod
+    def action_padlock(pos):
+        maingame.controller.camera_locked = not maingame.controller.camera_locked
 
 
 class PauseMenu(object):

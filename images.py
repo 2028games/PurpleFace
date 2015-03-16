@@ -8,8 +8,6 @@ class Images:
     blue_shrink_image = load_image("pngs/blue_shrink.png")
     blue_blink_original = blue_blink_image.copy()
     blue_shrink_original = blue_shrink_image.copy()
-    purple_image = load_image("pngs/purple.png")
-    red_image = load_image("pngs/red.png")
     death_image = load_image("pngs/death.png")
     exit_image = load_image("pngs/exit.png")
     splatters_image = load_image("pngs/splatters.png")
@@ -46,7 +44,23 @@ class Images:
     arrows_image = load_image("pngs/arrows.png")
     message_image = load_image("pngs/message.png")
     question_image = load_image("pngs/question.png")
+
+    # images for help dialogs
+    purple_image = load_image("pngs/purple.png")
+    red_image = load_image("pngs/red.png")
     town_image = load_image("pngs/town.png")
+
+    keyboard_left_image = load_image("pngs/keyboard_left.png")
+    keyboard_up_image = load_image("pngs/keyboard_up.png")
+    keyboard_right_image = load_image("pngs/keyboard_right.png")
+    keyboard_down_image = load_image("pngs/keyboard_down.png")
+    keyboard_esc_image = load_image("pngs/keyboard_esc.png")
+    keyboard_a_image = load_image("pngs/keyboard_a.png")
+    keyboard_d_image = load_image("pngs/keyboard_d.png")
+    keyboard_l_image = load_image("pngs/keyboard_l.png")
+    keyboard_r_image = load_image("pngs/keyboard_r.png")
+    keyboard_s_image = load_image("pngs/keyboard_s.png")
+    keyboard_w_image = load_image("pngs/keyboard_w.png")
 
     def __init__(self):
         pass  # this class is supposed to be a singleton!

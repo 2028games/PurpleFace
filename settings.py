@@ -30,8 +30,8 @@ class Settings(tsoliasgame.settings.Settings):
         self.set("blue_speed", 4)  # speed of character (and everything else that moves)
         self.set("quality", True)  # graphics quality (True = normal quality, False = low)
         self.set("debug_mode", False)  # gives you things like level skip and jump main character to point
-        self.set("sfx", 0.4)  # sfx volume
-        self.set("music", 1.0)  # bgm volume
+        self.set("sfx", 1.0)  # sfx volume
+        self.set("music", 0.4)  # bgm volume
         self.set("downloaded_levels_dir", "downloaded")  # dir where new levels are stored
         self.set("level_download_dir", "https://raw.githubusercontent.com/2028games/skipper_levels/master/")  # url to check for levels to download
         if progress:
