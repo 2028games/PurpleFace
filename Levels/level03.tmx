@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="24" height="24" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="32" tileheight="32" nextobjectid="1">
  <properties>
-  <property name="Description" value="The first level ever!"/>
+  <property name="Description" value="This is a big map, but not a hard one :)"/>
   <property name="Title" value="Level 3"/>
  </properties>
  <tileset firstgid="1" name="Walls" tilewidth="32" tileheight="32">

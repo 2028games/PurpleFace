@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="20" height="15" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" nextobjectid="1">
  <properties>
-  <property name="Description" value="The first level of this game!"/>
-  <property name="Title" value="Level 1"/>
+  <property name="Description" value="Welcome to PurpleFace!\nClick Start to play the tutorial."/>
+  <property name="Title" value="Tutorial"/>
  </properties>
  <tileset firstgid="1" name="Walls" tilewidth="32" tileheight="32">
   <image source="walls.png" width="352" height="224"/>

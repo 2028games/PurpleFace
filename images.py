@@ -2,7 +2,7 @@ from tsoliasgame import load_image
 
 
 class Images:
-
+    # images for game objects
     wall_image = load_image("pngs/walls.png")
     blue_blink_image = load_image("pngs/blue_blink.png")
     blue_shrink_image = load_image("pngs/blue_shrink.png")
@@ -25,7 +25,10 @@ class Images:
     water_image = load_image("pngs/water.png")
     ice_image = load_image("pngs/ice.png")
     wood_image = load_image("pngs/wood.png")
+
     hud_image = load_image("pngs/hud.png")
+
+    # images for level selection
     padlock_closed_image = load_image("pngs/padlock_closed.png")
     padlock_open_image = load_image("pngs/padlock_open.png")
     start_image = load_image("pngs/start.png")
@@ -34,6 +37,8 @@ class Images:
     lock_image = load_image("pngs/lock.png")
     tick_image = load_image("pngs/tick.png")
     switch_image = load_image("pngs/switch.png")
+
+    # images for pause menu
     paused_image = load_image("pngs/paused.png")
     play_menu_image = load_image("pngs/play_menu.png")
     restart_menu_image = load_image("pngs/restart_menu.png")
@@ -41,9 +46,6 @@ class Images:
     help_menu_image = load_image("pngs/help_menu.png")
     options_menu_image = load_image("pngs/options_menu.png")
     exit_menu_image = load_image("pngs/exit_menu.png")
-    arrows_image = load_image("pngs/arrows.png")
-    message_image = load_image("pngs/message.png")
-    question_image = load_image("pngs/question.png")
 
     # images for help dialogs
     purple_image = load_image("pngs/purple.png")
@@ -61,6 +63,11 @@ class Images:
     keyboard_r_image = load_image("pngs/keyboard_r.png")
     keyboard_s_image = load_image("pngs/keyboard_s.png")
     keyboard_w_image = load_image("pngs/keyboard_w.png")
+
+    # misc
+    arrows_image = load_image("pngs/arrows.png")
+    message_image = load_image("pngs/message.png")
+    question_image = load_image("pngs/question.png")
 
     def __init__(self):
         pass  # this class is supposed to be a singleton!

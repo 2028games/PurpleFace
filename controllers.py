@@ -647,6 +647,10 @@ class HelpController(Controller):
                 maingame.exit()  # exit
 
             elif event.type == pygame.KEYDOWN:  # keydowns
+                if event.key == pygame.K_UP:
+                    self.focus = (self.focus - 1) % len(self.items)
+                elif event.key == pygame.K_DOWN:
+                    self.focus = (self.focus + 1) % len(self.items)
                 if event.key == pygame.K_ESCAPE:
                     self.action_back(None)  # go back
 
