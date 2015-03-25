@@ -64,7 +64,7 @@ class BuildExe:
         self.project_description = "A puzzle game by 2028 Games"
  
         # Icon file (None will use pygame default icon)
-        self.icon_file = None
+        self.icon_file = "PurpleFace.ico"
  
         # Extra files/dirs copied to game
         self.extra_datas = ['Levels', 'others', 'pngs', 'audio']

@@ -30,7 +30,9 @@ class MainGame(tsoliasgame.Game):
             pygame.display.set_mode(size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         else:
             height = 480
-            width = int(height * size[0] / float(size[1]))
+            width = 800
+            if android:
+                width = int(height * size[0] / float(size[1]))
             size = (width, height)
             pygame.display.set_mode(size)
         info = pygame.display.Info()
@@ -59,7 +61,9 @@ class MainGame(tsoliasgame.Game):
         levels.level_changed = self.level_changed
 
         self.__fullscreen = False
+        pygame.display.set_icon(pygame.image.load("pngs/purple.png"))
         tsoliasgame.Game.__init__(self, fps, levels, size)
+        pygame.display.set_caption("PurpleFace")
         self.fullscreen = settings.get("fullscreen")
         tsoliasgame.load_module("objs")
         self.audio = audio.Audio()  # initialize audio

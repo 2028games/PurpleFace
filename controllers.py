@@ -540,7 +540,7 @@ class OptionsController(Controller):
         self.items[0].item = "Show Keypad ({0})".format(bool_to_string(settings.get("show_keypad")))
         self.items[1].item = "Keypad Scale (Current: {0})".format(settings.get("keypad_scale"))
         self.items[2].item = "Character Speed (Current: {0})".format(settings.get("blue_speed"))
-        self.items[3].item = "Fullscreen (Current: {0})".format(bool_to_string(settings.get("fullscreen"),
+        self.items[3].item = "Fullscreen (Beta) (Current: {0})".format(bool_to_string(settings.get("fullscreen"),
                                                                                      "On", "Off"))
         self.items[4].item = "Graphics Quality (Current: {0})".format(bool_to_string(settings.get("quality"),
                                                                                      "Normal", "Low"))

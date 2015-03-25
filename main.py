@@ -11,5 +11,5 @@ def main():
     game.start(game.screen)  # start loop
 
 if __name__ == "__main__":
-    #cProfile.run("main()")
-    main() #start!
+    # cProfile.run("main()")
+    main()  # start!
