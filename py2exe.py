@@ -58,7 +58,7 @@ class BuildExe:
         # Author of program
         self.author_name = "2028 Games"
         self.author_email = ""
-        self.copyright = "Copyright (c) 2009 Me."
+        self.copyright = ""
  
         # Description
         self.project_description = "A puzzle game by 2028 Games"
