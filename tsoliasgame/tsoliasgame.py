@@ -533,7 +533,7 @@ class LevelGroup(object):
 
 class Game(object):
     """A game class - dont use directly - inherit it!"""
-    def __init__(self, fps, levels, size, flags = 0):
+    def __init__(self, fps, levels, size, flags=0):
         """this function also initializes pygame
         fps: desired framerate
         levels: main LevelGroup

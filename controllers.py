@@ -93,6 +93,8 @@ class MainMenuController(Controller):
                     self.mode = 2
                 elif event.key == pygame.K_ESCAPE:
                     self.action_exit(None)  # exit
+                elif event.key == pygame.K_F11:
+                    maingame.fullscreen = not maingame.fullscreen
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 if self.mode == 1:
@@ -481,7 +483,7 @@ class OptionsController(Controller):
         Controller.__init__(self)
         maingame.paused = True
         self.buttons = tsoliasgame.ButtonGroup()
-        self.position = (100, 100)  # position of the menu
+        self.position = (100, 60)  # position of the menu
         self.back_color = tsoliasgame.colors.dodgerblue
         # next line enables a preview-only keypad so that the user can immediately see the results of options changing!!
         self.keypad = VirtualKeypad(settings.get("show_keypad"), True, True)
@@ -491,6 +493,7 @@ class OptionsController(Controller):
             MenuItem(None, self.action_show_keypad),
             MenuItem(None, self.action_keypad_scale),
             MenuItem(None, self.action_blue_speed),
+            MenuItem(None, self.action_fullscreen),
             MenuItem(None, self.action_quality),
             MenuItem(None, self.action_sfx),
             MenuItem(None, self.action_music),
@@ -520,6 +523,7 @@ class OptionsController(Controller):
 
     def draw(self, surface):
         surface.fill(self.back_color)
+        tsoliasgame.draw_text(surface, fonts.font_44, "Options", (self.position[0] - 16, self.position[1] - 56), tsoliasgame.colors.white)
 
         for i in range(len(self.items)):
             if i == 1 and not settings.get("show_keypad"):
@@ -536,10 +540,12 @@ class OptionsController(Controller):
         self.items[0].item = "Show Keypad ({0})".format(bool_to_string(settings.get("show_keypad")))
         self.items[1].item = "Keypad Scale (Current: {0})".format(settings.get("keypad_scale"))
         self.items[2].item = "Character Speed (Current: {0})".format(settings.get("blue_speed"))
-        self.items[3].item = "Graphics Quality (Current: {0})".format(bool_to_string(settings.get("quality"),
+        self.items[3].item = "Fullscreen (Current: {0})".format(bool_to_string(settings.get("fullscreen"),
+                                                                                     "On", "Off"))
+        self.items[4].item = "Graphics Quality (Current: {0})".format(bool_to_string(settings.get("quality"),
                                                                                      "Normal", "Low"))
-        self.items[4].item = "Sound Effects ({0} %)".format(int(settings.get("sfx") * 100))
-        self.items[5].item = "Music ({0} %)".format(int(settings.get("music") * 100))
+        self.items[5].item = "Sound Effects ({0} %)".format(int(settings.get("sfx") * 100))
+        self.items[6].item = "Music ({0} %)".format(int(settings.get("music") * 100))
 
     def action_show_keypad(self, pos):
         settings.set("show_keypad", not settings.get("show_keypad"))
@@ -568,6 +574,11 @@ class OptionsController(Controller):
             value = choices[0]
         settings.set("blue_speed", value)
         objs.Purple.spd = settings.get("blue_speed")
+        self.fill_strings()
+
+    def action_fullscreen(self, pos):
+        settings.set("fullscreen", not settings.get("fullscreen"))
+        maingame.fullscreen = settings.get("fullscreen")
         self.fill_strings()
 
     def action_quality(self, pos):
@@ -618,7 +629,7 @@ class HelpController(Controller):
         Controller.__init__(self)
         maingame.paused = True
         self.menu_position = (10, 100)
-        self.dialog_position = (maingame.size[1] / 2 + 260, 20)
+        self.dialog_position = (500, 20)
         self.buttons = tsoliasgame.ButtonGroup()  # buttons group
         self.back_color = tsoliasgame.colors.dodgerblue
         self.focus = 0  # focused item

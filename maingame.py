@@ -16,6 +16,29 @@ from multilevelgroup import MultiLevelGroup
 
 class MainGame(tsoliasgame.Game):
     @property
+    def fullscreen(self):
+        return self.__fullscreen
+
+    @fullscreen.setter
+    def fullscreen(self, value):
+        self.__fullscreen = value
+        size = pygame.display.list_modes()[0]
+        if value:
+            height = 600
+            width = int(height * size[0] / float(size[1]))
+            size = (width, height)
+            pygame.display.set_mode(size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
+        else:
+            height = 480
+            width = int(height * size[0] / float(size[1]))
+            size = (width, height)
+            pygame.display.set_mode(size)
+        info = pygame.display.Info()
+        self.size = (info.current_w, info.current_h)
+        print("new size: " + str(self.size))
+
+
+    @property
     def controller(self):
         return self.__controller
 
@@ -35,7 +58,9 @@ class MainGame(tsoliasgame.Game):
         levels.directories.append(settings.get("downloaded_levels_dir"))
         levels.level_changed = self.level_changed
 
+        self.__fullscreen = False
         tsoliasgame.Game.__init__(self, fps, levels, size)
+        self.fullscreen = settings.get("fullscreen")
         tsoliasgame.load_module("objs")
         self.audio = audio.Audio()  # initialize audio
         

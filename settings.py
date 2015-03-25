@@ -25,9 +25,10 @@ class Settings(tsoliasgame.settings.Settings):
         """sets default settings
         :param progress: if True it also resets variables related to progress
         """
-        self.set("show_keypad", True)  # show keypad
+        self.set("show_keypad", False)  # show keypad
         self.set("keypad_scale", 1.5)  # keypad size modifier
         self.set("blue_speed", 4)  # speed of character (and everything else that moves)
+        self.set("fullscreen", False)
         self.set("quality", True)  # graphics quality (True = normal quality, False = low)
         self.set("debug_mode", False)  # gives you things like level skip and jump main character to point
         self.set("sfx", 1.0)  # sfx volume
