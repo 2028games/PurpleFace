@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="42771184-33cb-4b83-905e-75ba5cb22fbe" name="Default" comment="Updated default level_dowload_dir">
+    <list default="true" id="42771184-33cb-4b83-905e-75ba5cb22fbe" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/circle.pyproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/circle.sln" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/circle.v12.suo" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers.py" afterPath="$PROJECT_DIR$/controllers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images.py" afterPath="$PROJECT_DIR$/images.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level00.tmx" afterPath="$PROJECT_DIR$/Levels/level00.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level02.tmx" afterPath="$PROJECT_DIR$/Levels/level02.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level03.tmx" afterPath="$PROJECT_DIR$/Levels/level03.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level04.tmx" afterPath="$PROJECT_DIR$/Levels/level04.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level05.tmx" afterPath="$PROJECT_DIR$/Levels/level05.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level06.tmx" afterPath="$PROJECT_DIR$/Levels/level06.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level07.tmx" afterPath="$PROJECT_DIR$/Levels/level07.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level08.tmx" afterPath="$PROJECT_DIR$/Levels/level08.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level09.tmx" afterPath="$PROJECT_DIR$/Levels/level09.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level10.tmx" afterPath="$PROJECT_DIR$/Levels/level10.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level11.tmx" afterPath="$PROJECT_DIR$/Levels/level11.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level12.tmx" afterPath="$PROJECT_DIR$/Levels/level12.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Levels/level14.tmx" afterPath="$PROJECT_DIR$/Levels/level14.tmx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="circle.iws" />
@@ -32,7 +22,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/circle$main.coverage" NAME="main Coverage Results" MODIFIED="1427294188049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/circle$main.coverage" NAME="main Coverage Results" MODIFIED="1427297486599" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -49,13 +39,13 @@
       <file leaf-file-name="controllers.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7116935" vertical-offset="7282" max-vertical-offset="14280">
-              <caret line="659" column="28" selection-start-line="659" selection-start-column="28" selection-end-line="659" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.5277402" vertical-offset="1230" max-vertical-offset="14265">
+              <caret line="124" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
                 <element signature="e#689#1114#0" expanded="false" />
-                <element signature="e#19054#24846#0" expanded="false" />
-                <element signature="e#44172#44564#0" expanded="false" />
+                <element signature="e#19037#24829#0" expanded="false" />
+                <element signature="e#44145#44537#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -94,11 +84,11 @@
         <option value="$PROJECT_DIR$/tsoliasgame/tsoliasgame.py" />
         <option value="$PROJECT_DIR$/objs.py" />
         <option value="$PROJECT_DIR$/help_dialogs.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/settings.py" />
         <option value="$PROJECT_DIR$/images.py" />
-        <option value="$PROJECT_DIR$/controllers.py" />
         <option value="$PROJECT_DIR$/settings.txt" />
+        <option value="$PROJECT_DIR$/controllers.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -496,7 +486,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426530080353</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="made a few level changes">
+      <created>1427296670517</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1427296670517</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -521,7 +517,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1598" height="861" extended-state="4" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -530,18 +526,18 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32887402" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988358" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988358" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14052698" sideWeight="0.5006468" order="0" side_tool="false" content_ui="tabs" x="965" y="79" width="226" height="773" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13739021" sideWeight="0.49935317" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13739021" sideWeight="0.49935317" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31723237" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31723237" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.32954547" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" x="100" y="100" width="1474" height="815" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32729626" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
@@ -566,7 +562,8 @@
     <MESSAGE value="Added most items in help menu" />
     <MESSAGE value="Added .gitignore" />
     <MESSAGE value="Updated default level_dowload_dir" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated default level_dowload_dir" />
+    <MESSAGE value="made a few level changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="made a few level changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -579,13 +576,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/maingame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="870">
-          <caret line="45" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="420">
@@ -600,8 +590,8 @@
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#689#1114#0" expanded="false" />
-            <element signature="e#19054#24846#0" expanded="false" />
-            <element signature="e#44172#44564#0" expanded="false" />
+            <element signature="e#19037#24829#0" expanded="false" />
+            <element signature="e#44145#44537#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -610,6 +600,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="5430" max-vertical-offset="8700">
           <caret line="362" column="8" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -641,8 +632,8 @@
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#689#1114#0" expanded="false" />
-            <element signature="e#19054#24846#0" expanded="false" />
-            <element signature="e#44172#44564#0" expanded="false" />
+            <element signature="e#19037#24829#0" expanded="false" />
+            <element signature="e#44145#44537#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -675,8 +666,8 @@
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#689#1114#0" expanded="false" />
-            <element signature="e#19054#24846#0" expanded="false" />
-            <element signature="e#44172#44564#0" expanded="false" />
+            <element signature="e#19037#24829#0" expanded="false" />
+            <element signature="e#44145#44537#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -855,14 +846,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06" vertical-offset="0" max-vertical-offset="500">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fonts.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.030549899" vertical-offset="0" max-vertical-offset="491">
@@ -897,6 +880,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3243968" vertical-offset="2518" max-vertical-offset="9045">
           <caret line="192" column="4" selection-start-line="192" selection-start-column="4" selection-end-line="192" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -947,15 +931,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.directory">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="739">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0608931" vertical-offset="0" max-vertical-offset="739">
+          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controllers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7116935" vertical-offset="7282" max-vertical-offset="14280">
-          <caret line="659" column="28" selection-start-line="659" selection-start-column="28" selection-end-line="659" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.5277402" vertical-offset="1230" max-vertical-offset="14265">
+          <caret line="124" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#689#1114#0" expanded="false" />
-            <element signature="e#19054#24846#0" expanded="false" />
-            <element signature="e#44172#44564#0" expanded="false" />
+            <element signature="e#19037#24829#0" expanded="false" />
+            <element signature="e#44145#44537#0" expanded="false" />
           </folding>
         </state>
       </provider>

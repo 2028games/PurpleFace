@@ -146,7 +146,7 @@ class MainMenuController(Controller):
 
     def action_help(self, pos):
         if self.mode == 0:
-            maingame.controller = HelpController()  # TODO: fix item
+            maingame.controller = HelpController()
 
     def action_options(self, pos):
         if self.mode == 0:
@@ -158,7 +158,7 @@ class MainMenuController(Controller):
 
     def action_credits(self, pos):
         if self.mode == 0:
-            maingame.controller = LevelSelectionController()  # TODO: fix item
+            dialogs.message.show("Not Implemented", "Later!")  # TODO: fix item
 
     @staticmethod
     def action_exit(pos):
@@ -1080,8 +1080,7 @@ class PauseMenu(object):
 
     @staticmethod
     def action_help():
-        #TODO: implement transition to help
-        pass
+        maingame.controller = HelpController()
 
     @staticmethod
     def action_options():
