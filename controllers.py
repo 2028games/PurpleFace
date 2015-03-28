@@ -50,6 +50,35 @@ class Controller(object):
         pass
 
 
+class IntroController(Controller):
+    """controls intro screen"""
+    def __init__(self):
+        Controller.__init__(self)
+        maingame.paused = True
+        self.frames = 0
+        self.back_color = tsoliasgame.colors.black
+
+    def event_handling(self):
+        """handles pygame events"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # if x clicked
+                maingame.exit()  # exit
+
+    def draw(self, surface):
+        surface.fill(self.back_color)
+
+        if self.frames <= 2 * maingame.fps:
+            image = Images.c_logo_image
+        elif self.frames <= 4 * maingame.fps:
+            image = Images.g_logo_image
+        else:
+            maingame.controller = MainMenuController()
+            return
+
+        surface.blit(image, ((maingame.size[0] - image.get_width()) / 2, (maingame.size[1] - image.get_height()) / 2))
+        self.frames += 1
+
+
 class MainMenuController(Controller):
     """controls main menu screen"""
     def __init__(self):

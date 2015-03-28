@@ -78,8 +78,11 @@ class MainGame(tsoliasgame.Game):
         # and start the primary controller
         import controllers
         self.__controller = None
-        self.controller = controllers.MainMenuController()
-                
+        if self.debug_mode:
+            self.controller = controllers.MainMenuController()
+        else:
+            self.controller = controllers.IntroController()
+
     def pre_update(self):
         pass
     

@@ -69,5 +69,8 @@ class Images:
     message_image = load_image("pngs/message.png")
     question_image = load_image("pngs/question.png")
 
+    c_logo_image = load_image("pngs/2028.png")
+    g_logo_image = load_image("pngs/PurpleFace.png")
+
     def __init__(self):
         pass  # this class is supposed to be a singleton!
