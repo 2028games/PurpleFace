@@ -207,7 +207,7 @@ class LevelDownloadController(Controller):
         # if it doesnt exist lets make it now
         if not os.path.isdir(self.local_dir):
             try:
-                os.makedirs(self.local_dir)
+                os.mkdir(self.local_dir)
             except OSError:
                 # might need elevated privileges
                 dialogs.message.show("Os Error", "Elevated privileges might be needed for this action.")

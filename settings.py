@@ -1,11 +1,14 @@
 import tsoliasgame.settings
+import os
+import os.path
 
 
 class Settings(tsoliasgame.settings.Settings):
-    def __init__(self, location):
+    def __init__(self, save_dir, save_file):
         tsoliasgame.settings.Settings.__init__(self)
         self.first_time = False  # will be set to true later if save file was not found
-        self.location = location  # save file location
+        self.save_dir = save_dir
+        self.save_file = os.path.join(save_dir, save_file)  # save file location
         
         self.defaults(True)  # start with defaults first
         
@@ -14,10 +17,10 @@ class Settings(tsoliasgame.settings.Settings):
             self.save()  # save the defaults
 
     def save(self):
-        tsoliasgame.settings.Settings.save(self, self.location)
+        tsoliasgame.settings.Settings.save(self, self.save_file)
 
     def load(self):
-        if tsoliasgame.settings.Settings.load(self, self.location) == 1:
+        if tsoliasgame.settings.Settings.load(self, self.save_file) == 1:
             self.save()
             self.first_time = True
             
@@ -33,10 +36,14 @@ class Settings(tsoliasgame.settings.Settings):
         self.set("debug_mode", False)  # gives you things like level skip and jump main character to point
         self.set("sfx", 1.0)  # sfx volume
         self.set("music", 0.4)  # bgm volume
-        self.set("downloaded_levels_dir", "downloaded")  # dir where new levels are stored
+        self.set("downloaded_levels_dir", os.path.join(self.save_dir, "downloaded"))  # dir where new levels are stored
         self.set("level_download_dir", "https://raw.githubusercontent.com/2028games/PurpleFace_levels/master/")  # url to check for levels to download
         if progress:
             self.set("unlocked", 1)  # number of unlocked levels
             self.set("levels_won", [])  # list of won levels
-        
-settings = Settings("settings.txt")
+
+
+save_dir = os.path.join(os.path.expanduser("~"), ".PurpleFace")
+if not os.path.isdir(save_dir):
+    os.mkdir(save_dir)
+settings = Settings(save_dir, "settings.txt")
