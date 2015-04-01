@@ -2,6 +2,7 @@ import os
 import threading
 import urllib
 import urllib2
+import achievements
 import dialogs
 import help_dialogs
 from images import Images
@@ -100,6 +101,7 @@ class MainMenuController(Controller):
             MenuItem("Help", self.action_help),
             MenuItem("Options", self.action_options),
             MenuItem("Download more levels", self.action_download),
+            MenuItem("Achievements", self.action_achievements),
             MenuItem("Credits", self.action_credits),
             MenuItem("Exit", self.action_exit))
 
@@ -186,6 +188,10 @@ class MainMenuController(Controller):
     def action_download(self, pos):
         if self.mode == 0:
             maingame.controller = LevelDownloadController()
+
+    def action_achievements(self, pos):
+        if self.mode == 0:
+            maingame.controller = AchievementsController()
 
     def action_credits(self, pos):
         if self.mode == 0:
@@ -759,6 +765,7 @@ class GameplayController(Controller):
 
         self.buttons.add(btn_view)
         self.view_changing = False
+        self.steps = 0  # counts total steps passed
 
         # load music
         mixer.music.unpause()
@@ -770,6 +777,7 @@ class GameplayController(Controller):
         self.level_changed()
         
     def level_changed(self):
+        objs.Purple.aheradrim = False
         # generate background
         classes = [objs.Wall, objs.Ice, objs.Death]
         if not settings.get("quality"):
@@ -803,7 +811,7 @@ class GameplayController(Controller):
                 elif maingame.paused:
                     self.pause_menu.key_down(event)
                 elif event.key == pygame.K_r:
-                    maingame.levels.restart_current()
+                    self.restart_level()
                 elif event.key == pygame.K_l:
                     self.camera_locked = not self.camera_locked
                 # jump level keys - ONLY IN DEBUG MODE
@@ -819,13 +827,14 @@ class GameplayController(Controller):
                 elif not (self.keypad and self.keypad.mouse_down(event)):
                     self.buttons.handle_clicks(event.pos)  # buttons handle the event
 
-                    # move blue with ctrl + click - ONLY IN DEBUG MODE
+                    # move purple with ctrl + click - ONLY IN DEBUG MODE
                     if maingame.debug_mode:
                         keys = pygame.key.get_pressed()
                         if keys[pygame.K_LCTRL]:
-                            for blue in objs.Purple.all:
-                                blue.set_center(tsoliasgame.vector2.add(event.pos, maingame.levels.view.position))
-                                blue.snap_grid((32, 32))
+                            for purple in objs.Purple.all:
+                                purple.set_center(tsoliasgame.vector2.add(event.pos, maingame.levels.view.position))
+                                purple.snap_grid((32, 32))
+                                print(purple.position)
 
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0] == 1:
@@ -860,6 +869,11 @@ class GameplayController(Controller):
         if not (self.keypad and self.keypad.used):  # if no virtual key was pressed
             objs.Purple.handle_keyboard()  # handle the keyboard to move Purple
 
+        self.steps += 1
+        if self.steps >= maingame.fps:
+            self.steps = 0
+            achievements.achievements["total_time"].main_value += 1
+
     def draw(self, surface):
         # draw background tiles
         surface.blit(self.background, tsoliasgame.vector2.multiply(-1, maingame.levels.view.position))
@@ -877,8 +891,109 @@ class GameplayController(Controller):
         if maingame.paused:
             self.pause_menu.draw(surface)
 
+        # DRAW ACHIEVEMENT
+        achievements.Achievement.draw_achievement(surface)
+
+    @staticmethod
+    def restart_level():
+        achievement = achievements.achievements["times_restarted"]
+        achievement.main_value += 1
+
+        maingame.levels.restart_current()
+
     def action_camera(self, pos):
         self.view_changing = True
+
+
+class AchievementsController(Controller):
+    """controls achievement screen"""
+    def __init__(self):
+        Controller.__init__(self)
+        maingame.paused = True
+        self.position = (maingame.size[0] / 2 - 100, 100)
+        self.sidebar_position = (maingame.size[0] - 120, 100)
+        self.buttons = tsoliasgame.ButtonGroup()  # buttons group
+        self.back_color = tsoliasgame.colors.dodgerblue
+        self.focus = None
+        self.focus_i = 0
+        self.achievements = achievements.achievements
+        self.line_width = 6
+        self.size = (60, 100)
+
+        # and create a big button
+        button = tsoliasgame.Button(self.action_menu, rect=pygame.Rect(
+            self.position[0] - self.line_width / 2 * self.size[0], self.position[1], self.size[0] * self.line_width, 400))
+        self.buttons.add(button)
+
+        mixer.music.stop()
+
+    def event_handling(self):
+        """handles pygame events"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # if x clicked
+                maingame.exit()  # exit
+
+            elif event.type == pygame.KEYDOWN:  # keydowns
+                if event.key == pygame.K_ESCAPE:
+                    self.action_back(None)  # go back
+
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.buttons.handle_clicks(event.pos)
+
+    def draw(self, surface):
+        surface.fill(self.back_color)
+
+        tsoliasgame.draw_text(surface, fonts.font_44, "Achievements",
+                              (self.position[0], self.position[1] - 60), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
+
+        # draw the medals
+        i = 0
+        for key, achievement in self.achievements.iteritems():
+            j = 0
+            for level in achievement.levels:
+                image = level.image
+                if j >= achievement.current_level:
+                    image = Images.medal_hidden_image
+
+                new_image = image
+                if i == self.focus_i:
+                    self.focus = level
+                    new_image = pygame.transform.scale(image, (48, 96))
+
+                    # draw the current medal info
+                    surface.blit(new_image,
+                                 (self.sidebar_position[0] - 24, self.sidebar_position[1]))
+                    tsoliasgame.draw_text(surface, fonts.font_26, self.focus.title,
+                                          (self.sidebar_position[0], self.sidebar_position[1] + 100), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
+                    tsoliasgame.draw_text(surface, fonts.font_20, self.focus.description,
+                                          (self.sidebar_position[0], self.sidebar_position[1] + 130), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
+
+                    status_string = "Completed!"
+                    color = tsoliasgame.colors.green
+                    if j >= achievement.current_level:
+                        color = tsoliasgame.colors.red
+                        status_string = "Progress: {0}/{1}".format(achievement.main_value, level.check_value)
+                    tsoliasgame.draw_text(surface, fonts.font_20, status_string,
+                                          (self.sidebar_position[0], self.sidebar_position[1] + 156), color, tsoliasgame.ALIGN_CENTER)
+
+                surface.blit(new_image,
+                             (self.position[0] + self.size[0] * (i % self.line_width - self.line_width / 2),
+                              self.position[1] + self.size[1] * (i / self.line_width)))
+                i += 1
+                j += 1
+
+        pygame.draw.line(surface, tsoliasgame.colors.white,
+                         (self.sidebar_position[0] - 120, 0), (self.sidebar_position[0] - 120, maingame.size[1]), 4)
+
+
+
+    def action_menu(self, pos):
+        self.focus_i = (pos[0] - self.position[0]) / self.size[0] + self.line_width / 2 + \
+                       self.line_width * ((pos[1] - self.position[1]) / self.size[1])
+
+    @staticmethod
+    def action_back(pos):
+        maingame.controller = maingame.previous_controller.__class__()
 
 
 class VirtualKeypad(object):
@@ -1077,7 +1192,7 @@ class PauseMenu(object):
        
         x = self.x - 64
         for i in range(3):
-            #make sure x is within bounds
+            # make sure x is within bounds
             x %= x_max
             
             cur_item = x / 64
@@ -1109,7 +1224,7 @@ class PauseMenu(object):
     @staticmethod
     def action_restart():
         maingame.paused = False
-        maingame.levels.restart_current()
+        GameplayController.restart_level()
         
     @staticmethod
     def action_back():

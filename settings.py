@@ -13,15 +13,18 @@ class Settings(tsoliasgame.settings.Settings):
         self.defaults(True)  # start with defaults first
         
         # and attempt to load the file
-        if self.load():  # error value returned
-            self.save()  # save the defaults
+        self.load()
 
     def save(self):
+        # before saving we need to get the modified values of achievements
+        import achievements
+        for key, value in achievements.achievements.iteritems():
+            self.set(key, value.main_value)
+
         tsoliasgame.settings.Settings.save(self, self.save_file)
 
     def load(self):
         if tsoliasgame.settings.Settings.load(self, self.save_file) == 1:
-            self.save()
             self.first_time = True
             
     def defaults(self, progress=False):
@@ -31,7 +34,7 @@ class Settings(tsoliasgame.settings.Settings):
         self.set("show_keypad", False)  # show keypad
         self.set("keypad_scale", 1.5)  # keypad size modifier
         self.set("blue_speed", 4)  # speed of character (and everything else that moves)
-        self.set("fullscreen", False)
+        self.set("fullscreen", False) # whether its fullscreen
         self.set("quality", True)  # graphics quality (True = normal quality, False = low)
         self.set("debug_mode", False)  # gives you things like level skip and jump main character to point
         self.set("sfx", 1.0)  # sfx volume
@@ -41,6 +44,13 @@ class Settings(tsoliasgame.settings.Settings):
         if progress:
             self.set("unlocked", 1)  # number of unlocked levels
             self.set("levels_won", [])  # list of won levels
+
+            self.set("paint_collected", 0)
+            self.set("times_restarted", 0)
+            self.set("times_died", 0)
+            self.set("total_time", 0)
+            self.set("total_dist", 0)
+            self.set("aheradrim", 0)
 
 
 save_dir = os.path.join(os.path.expanduser("~"), ".PurpleFace")

@@ -107,3 +107,7 @@ class MainGame(tsoliasgame.Game):
         
         if surface == self.screen:
             pygame.display.flip()  # flip to screen
+
+    def exit(self):
+        settings.save()
+        tsoliasgame.Game.exit(self)

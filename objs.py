@@ -3,6 +3,7 @@ import dialogs
 import tsoliasgame
 import pygame
 import maingame
+import achievements
 from settings import settings
 from images import Images
 
@@ -84,6 +85,7 @@ class Moveable(tsoliasgame.Obj):
 class Purple(Moveable):
     spd = settings.get("blue_speed")  # speed the object should take when a key is pressed
     paused = False
+    aheradrim = False
     direction = (0, 0)  # the direction the object should move according to input
 
     def __init__(self, layer=3, position=(0, 0), speed=(0, 0), addtolevel=None):
@@ -100,6 +102,17 @@ class Purple(Moveable):
     def update(self):
         if not Purple.paused:
             if self.check_grid((32, 32)):  # checks grid
+
+                if not self.position == self.previous_pos:
+                    # update move achievement
+                    achievements.achievements["total_dist"].main_value += 32
+
+                    # aheradrim
+                    if self.position[0] == -96 and not Purple.aheradrim and \
+                     "secret" in maingame.maingame.levels.current().description:
+                        achievements.achievements["aheradrim"].main_value = 1
+                        Purple.aheradrim = True
+                        self.image = Images.aheradrim_image
 
                 if not self.on_grid_update():  # if update was not handled by parent
                     # handle it now
@@ -129,6 +142,9 @@ class Purple(Moveable):
                     # collision with Paint
                     other = Paint.all.check_same_pos(self)
                     if other:
+                        achievement = achievements.achievements["paint_collected"]
+                        achievement.main_value += 1
+
                         maingame.maingame.audio.sfx_pickup.play()
                         other.destroy()
                         if len(Paint.all) == 0:
@@ -153,7 +169,7 @@ class Purple(Moveable):
                             self.speed = (0, 0)
 
                 # anyway check if target position is occupied
-                if self.check_collision_ahead(Wall.all):  # if there is collision with block ahead
+                if self.check_collision_ahead(Wall.all) and not Purple.aheradrim:  # if there is collision with block ahead
                     self.speed = (0, 0)  # set speed to 0
 
             else:  # not on grid
@@ -180,7 +196,7 @@ class Purple(Moveable):
 
         # HANDLE ANIMATION
         self.on_update_end()
-        if not self.paused:
+        if not self.paused and not Purple.aheradrim:
             # BLINK ANIMATION - ONLY IF NOT PAUSED
             if self.current_image == 0:
                 if self.__blink <= 0:
@@ -193,8 +209,12 @@ class Purple(Moveable):
         tsoliasgame.Obj.update(self)
 
     def die(self):
-        Tutorial.current = 0
-        maingame.maingame.levels.restart_current()  # restart level
+        # update death achievement
+        achievements.achievements["times_died"].main_value += 1
+
+        Tutorial.current = 0  # reset tutorial messages
+        from controllers import GameplayController
+        GameplayController.restart_level()
 
     @staticmethod
     def handle_keyboard():

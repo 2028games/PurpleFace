@@ -25,6 +25,7 @@ class Images:
     water_image = load_image("pngs/water.png")
     ice_image = load_image("pngs/ice.png")
     wood_image = load_image("pngs/wood.png")
+    aheradrim_image = load_image("pngs/aheradrim.png")
 
     hud_image = load_image("pngs/hud.png")
 
@@ -63,6 +64,13 @@ class Images:
     keyboard_r_image = load_image("pngs/keyboard_r.png")
     keyboard_s_image = load_image("pngs/keyboard_s.png")
     keyboard_w_image = load_image("pngs/keyboard_w.png")
+
+    # trophies
+    medal1_image = load_image("pngs/medal1.png")
+    medal2_image = load_image("pngs/medal2.png")
+    medal3_image = load_image("pngs/medal3.png")
+    medal_aheradrim_image = load_image("pngs/medal_aheradrim.png")
+    medal_hidden_image = load_image("pngs/medal_hidden.png")
 
     # misc
     arrows_image = load_image("pngs/arrows.png")
