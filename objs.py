@@ -59,6 +59,7 @@ class Moveable(tsoliasgame.Obj):
                 if self.current_image == 0:  # end of effect
                     self.paused = False  # enable movement again
                     Purple.paused = False
+                    Purple.aheradrim = False
                     self.image = self.initial_image  # and restore correct image
             else:  # SHRINKING
                 if self.current_image == 7:  # end of effect
