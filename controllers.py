@@ -195,7 +195,7 @@ class MainMenuController(Controller):
 
     def action_credits(self, pos):
         if self.mode == 0:
-            dialogs.message.show("Not Implemented", "Later!")  # TODO: fix item
+            maingame.controller = CreditsController()
 
     @staticmethod
     def action_exit(pos):
@@ -898,7 +898,7 @@ class GameplayController(Controller):
     def restart_level():
         achievement = achievements.achievements["times_restarted"]
         achievement.main_value += 1
-
+        objs.Tutorial.current = 0  # reset tutorial messages
         maingame.levels.restart_current()
 
     def action_camera(self, pos):
@@ -985,14 +985,95 @@ class AchievementsController(Controller):
         pygame.draw.line(surface, tsoliasgame.colors.white,
                          (self.sidebar_position[0] - 120, 0), (self.sidebar_position[0] - 120, maingame.size[1]), 4)
 
-
-
     def action_menu(self, pos):
         self.focus_i = (pos[0] - self.position[0]) / self.size[0] + self.line_width / 2 + \
                        self.line_width * ((pos[1] - self.position[1]) / self.size[1])
 
     @staticmethod
     def action_back(pos):
+        maingame.controller = maingame.previous_controller.__class__()
+
+
+class CreditsController(Controller):
+    """controls credits screen"""
+    def __init__(self):
+        Controller.__init__(self)
+        maingame.paused = True
+        self.y = 100
+        self.back_color = tsoliasgame.colors.dodgerblue
+
+        self.surface = None
+        self.surface_height = self.generate_surface()
+
+        # start music
+        mixer.music.load("audio/pleasantcreek.ogg")
+        mixer.music.play(-1)
+        mixer.music.set_volume(settings.get("music"))
+
+    def event_handling(self):
+        """handles pygame events"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # if x clicked
+                maingame.exit()  # exit
+
+            elif event.type == pygame.KEYDOWN:  # keydowns
+                self.action_back()  # go back
+
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.action_back()
+
+    def draw(self, surface):
+        surface.fill(self.back_color)
+        if self.surface:
+            surface.blit(self.surface, (0, self.y))
+        else:
+            dialogs.message.show("Error", "An Error occured! Credits could not be displayed.")
+        self.y -= 1
+        if -1 * self.y > self.surface_height:
+            self.action_back()
+
+    def generate_surface(self):
+        if not os.path.exists("credits.txt"):
+            return 0
+
+        surface = pygame.Surface((maingame.size[0], 2000))
+        y = 10
+        text_file = open("credits.txt", "r")
+
+        surface.fill(self.back_color)
+
+        for line in text_file.readlines():
+            text = line.strip()
+            if text == "":
+                y += 26
+                continue
+
+            if not text[0] == "#":
+                if text.startswith("H:"):
+                    font = fonts.font_44
+                    space = 44
+                    remove = 2
+                elif text.startswith("h:"):
+                    font = fonts.font_32
+                    space = 32
+                    remove = 2
+                else:
+                    font = fonts.font_26
+                    space = 26
+                    remove = 0
+
+                tsoliasgame.draw_text(surface, font, text[remove:],
+                                      (maingame.size[0] / 2, y), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
+                y += space
+
+        text_file.close()
+        self.surface = surface
+        return y
+
+
+
+    @staticmethod
+    def action_back():
         maingame.controller = maingame.previous_controller.__class__()
 
 

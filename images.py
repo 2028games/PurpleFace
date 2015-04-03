@@ -22,7 +22,6 @@ class Images:
     teleporter_image = load_image("pngs/teleporter_en.png")
     teleporter_active_image = load_image("pngs/teleporter_active.png")
     teleporter_dis_image = load_image("pngs/teleporter_dis.png")
-    water_image = load_image("pngs/water.png")
     ice_image = load_image("pngs/ice.png")
     wood_image = load_image("pngs/wood.png")
     aheradrim_image = load_image("pngs/aheradrim.png")

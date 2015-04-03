@@ -1,0 +1,47 @@
+H:Credits
+
+h:Lead Developer
+Thanasis Katsios
+
+h:Programming
+Thanasis Katsios
+
+h:Graphics Design
+Kenney (http://kenney.nl)
+Thanasis Katsios
+Xelu (http://opengameart.org/users/xelu)
+
+h:Music Design
+Matthew Pablo (http://matthewpablo.com/)
+
+h:SFX Design
+Kenney
+Paulius Jurgelevicius
+Thanasis Katsios
+
+h:Testing
+Panos Marinopoulos
+Stefanos Argyriou
+Stergios Souftas
+Thanasis Katsios
+
+h:Thanks to the Developers of
+Python
+Pygame
+PyCharm Community Edition
+Git
+Tiled
+OpenGameArt.org
+GIMP
+Paint.NET
+Audacity
+
+
+If I forgot anyone please remind me :)
+
+
+Thank you for playing PurpleFace
+and for watching the credits till the end :)
+
+
+h: 2028games

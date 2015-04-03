@@ -213,7 +213,6 @@ class Purple(Moveable):
         # update death achievement
         achievements.achievements["times_died"].main_value += 1
 
-        Tutorial.current = 0  # reset tutorial messages
         from controllers import GameplayController
         GameplayController.restart_level()
 

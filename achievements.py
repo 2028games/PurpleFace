@@ -6,6 +6,7 @@ import tsoliasgame
 import pygame
 from images import Images
 
+
 class AchievementLevel(object):
     def __init__(self, check_value, title, description, image):
         self.check_value = check_value
@@ -106,4 +107,3 @@ achievements = collections.OrderedDict([
 
 
 ])
-print("test")
