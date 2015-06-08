@@ -27,7 +27,7 @@ class Moveable(tsoliasgame.Obj):
         if not self.speed == (0, 0):
             other = Mover.all.check_same_pos(self)
             if other:
-                self.speed = tsoliasgame.vector2.multiply(Purple.spd, other.__class__.direction)
+                self.speed = tsoliasgame.vector2.multiply(2 * Purple.spd, other.__class__.direction)
                 return True
 
         # collision with Death
@@ -110,7 +110,7 @@ class Purple(Moveable):
 
                     # aheradrim
                     if self.position[0] == -96 and not Purple.aheradrim and \
-                     "secret" in maingame.maingame.levels.current().description:
+                       "secret" in maingame.maingame.levels.current().description:
                         achievements.achievements["aheradrim"].main_value = 1
                         Purple.aheradrim = True
                         self.image = Images.aheradrim_image
@@ -170,8 +170,15 @@ class Purple(Moveable):
                             self.speed = (0, 0)
 
                 # anyway check if target position is occupied
-                if self.check_collision_ahead(Wall.all) and not Purple.aheradrim:  # if there is collision with block ahead
+                if self.check_collision_ahead(Wall.all) and not Purple.aheradrim:  # collision with wall
                     self.speed = (0, 0)  # set speed to 0
+                else:
+                    other = self.check_collision_ahead(WoodenBox.all)  # collision with wooden box
+                    if other:
+                        if tsoliasgame.vector2.get_length(self.speed) <= Purple.spd:
+                            self.speed = (0, 0)
+                        else:
+                            other.destroy()
 
             else:  # not on grid
                 other = pygame.sprite.spritecollideany(self, Rock.all,
@@ -179,7 +186,8 @@ class Purple(Moveable):
                 if other:
                     other.speed = self.speed
                     # if there is another rock or wall ahead of the collided rock
-                    if other.check_collision_ahead(Wall.all) or other.check_collision_ahead(Rock.all):
+                    if other.check_collision_ahead(Wall.all) or other.check_collision_ahead(Rock.all) \
+                            or other.check_collision_ahead(WoodenBox.all):
                         self.speed = (0, 0)  # set the speed of everything to 0 and snap to grid
                         self.snap_grid((32, 32))
                         other.speed = (0, 0)
@@ -274,6 +282,13 @@ class Rock(Moveable):
                 if (not self.on_grid_update() and not Ice.all.check_same_pos(self)) or \
                         self.check_collision_ahead(Wall.all) or self.check_collision_ahead(Rock.all):
                     self.speed = (0, 0)  # set speed to 0
+                else:
+                    other = self.check_collision_ahead(WoodenBox.all)  # collision with wooden box
+                    if other:
+                        if tsoliasgame.vector2.get_length(self.speed) <= Purple.spd:
+                            self.speed = (0, 0)
+                        else:
+                            other.destroy()
 
             elif self.collided:
                 self.collided = False
@@ -535,7 +550,7 @@ class Tutorial(tsoliasgame.Obj):
 
 def obj_from_tiles(layer, position, addtolevel, tile):
     wall_tiles = 77
-    tmx_bindings = {1: Exit, 2: Wall, 3: Ice, 4: Death, 5: TeleporterEn, 6: Tutorial,
+    tmx_bindings = {1: Exit, 2: Wall, 3: Ice, 4: Death, 5: TeleporterEn, 6: Tutorial, 7: WoodenBox,
                     9: MoverU, 10: MoverD, 11: MoverL, 12: MoverR, 13: SwitchDis, 14: SwitchEn,
                     17: Wood, 25: Rock, 33: Purple, 34: Paint}
                     
@@ -547,3 +562,11 @@ def obj_from_tiles(layer, position, addtolevel, tile):
             return obj_type(layer=layer, position=position, addtolevel=addtolevel)
         except KeyError:
             print(tile)
+
+
+class WoodenBox(tsoliasgame.Obj):
+    def __init__(self, layer=0, position=(0, 0), addtolevel=None):
+        tsoliasgame.Obj.__init__(self, Images.wooden_box_image, layer, position, usemask=False, addtolevel=addtolevel)
+
+    def update(self):
+        pass  # no update needed

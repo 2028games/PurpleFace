@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" nextobjectid="1">
  <properties>
-  <property name="Description" value="The first level ever!"/>
-  <property name="Title" value="Level 1"/>
+  <property name="Description" value="Template for new levels"/>
+  <property name="Title" value="Empty"/>
  </properties>
- <tileset firstgid="1" name="Walls" tilewidth="32" tileheight="32">
-  <image source="walls.png" width="288" height="128"/>
+ <tileset firstgid="1" name="Walls" tilewidth="32" tileheight="32" tilecount="77">
+  <image source="walls.png" width="352" height="224"/>
  </tileset>
- <tileset firstgid="37" name="Layer0" tilewidth="32" tileheight="32">
-  <image source="Layer0.png" width="192" height="64"/>
+ <tileset firstgid="78" name="Layer0" tilewidth="32" tileheight="32" tilecount="16">
+  <image source="Layer0.png" width="256" height="64"/>
  </tileset>
- <tileset firstgid="49" name="Layer1" tilewidth="32" tileheight="32">
-  <image source="Layer1.png" width="64" height="32"/>
+ <tileset firstgid="94" name="Layer1" tilewidth="32" tileheight="32" tilecount="8">
+  <image source="Layer1.png" width="256" height="32"/>
  </tileset>
- <tileset firstgid="51" name="Layer2" tilewidth="32" tileheight="32">
-  <image source="Layer2.png" width="32" height="32"/>
+ <tileset firstgid="102" name="Layer2" tilewidth="32" tileheight="32" tilecount="8">
+  <image source="Layer2.png" width="256" height="32"/>
  </tileset>
- <tileset firstgid="52" name="Layer3" tilewidth="32" tileheight="32">
-  <image source="Layer3.png" width="64" height="32"/>
+ <tileset firstgid="110" name="Layer3" tilewidth="32" tileheight="32" tilecount="8">
+  <image source="Layer3.png" width="256" height="32"/>
  </tileset>
  <layer name="Layer 0" width="20" height="15">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+5,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,7,
+15,0,0,0,0,0,0,0,0,78,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,
+27,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,29
 </data>
  </layer>
  <layer name="Layer 1" width="20" height="15">
@@ -91,7 +91,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,110,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>

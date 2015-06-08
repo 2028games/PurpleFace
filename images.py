@@ -24,6 +24,7 @@ class Images:
     teleporter_dis_image = load_image("pngs/teleporter_dis.png")
     ice_image = load_image("pngs/ice.png")
     wood_image = load_image("pngs/wood.png")
+    wooden_box_image = load_image("pngs/wooden_box.png")
     aheradrim_image = load_image("pngs/aheradrim.png")
 
     hud_image = load_image("pngs/hud.png")
