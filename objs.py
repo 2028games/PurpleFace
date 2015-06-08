@@ -530,12 +530,13 @@ class Tutorial(tsoliasgame.Obj):
     messages = (
         "Welcome to PurpleFace! \n Use the arrow keys to move!",
         "Your purpose is to collect those\nsplatters of blue paint \nthat are scattered in the level.",
-        "To your right you can see a\nmover tile. They allow movement\nin one direction only.",
+        "To your right you can see a\nmover tile. They allow movement\nin one direction only.\nThey also double your speed temporarily,\nwhich can be useful sometimes!",
         "Hmm, this mover is blocking\n your way. What will you do?",
         "Nice!\nNow you can see ice on the\n road ahead. Ice makes you slide.",
         "To your left there is a rock. You\ncan push rocks by moving towards them.\nThere are also some other tiles.\nStep on them to see what happens!",
         "Ok next time dont fall into\nblack holes they can kill you :)\n Now, you have to collect\nthe remaining paint.",
         "If you have collected all the paint\nyou can now go to the next\nlevel throught the exit.\nIf not, press [R] to restart.",
+        "As you might have noticed,\nwooden boxes are unmovable\nbut can be broken with higher speed.",
         "Goodbye!"
     )
 
@@ -550,9 +551,9 @@ class Tutorial(tsoliasgame.Obj):
 
 def obj_from_tiles(layer, position, addtolevel, tile):
     wall_tiles = 77
-    tmx_bindings = {1: Exit, 2: Wall, 3: Ice, 4: Death, 5: TeleporterEn, 6: Tutorial, 7: WoodenBox,
+    tmx_bindings = {1: Exit, 2: Wall, 3: Ice, 4: Death, 5: TeleporterEn, 6: Tutorial,
                     9: MoverU, 10: MoverD, 11: MoverL, 12: MoverR, 13: SwitchDis, 14: SwitchEn,
-                    17: Wood, 25: Rock, 33: Purple, 34: Paint}
+                    17: Wood, 19: WoodenBox, 25: Rock, 33: Purple, 34: Paint}
                     
     if tile <= wall_tiles:
         return Wall(layer=layer, position=position, addtolevel=addtolevel, tile=tile - 1)
