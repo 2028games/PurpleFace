@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import pygame
 pygame.mixer.pre_init(buffer=512)
 pygame.init()

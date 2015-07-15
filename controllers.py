@@ -875,6 +875,13 @@ class GameplayController(Controller):
             achievements.achievements["total_time"].main_value += 1
 
     def draw(self, surface):
+        # do some level-related shit
+        if objs.Switch.pressed:
+            objs.Switch.pressed = False
+            objs.Mover.changed = True
+        else:
+            objs.Mover.changed = False
+        
         # draw background tiles
         surface.blit(self.background, tsoliasgame.vector2.multiply(-1, maingame.levels.view.position))
         

@@ -24,7 +24,7 @@ class Moveable(tsoliasgame.Obj):
         # returns if update should stop
 
         # collision with mover
-        if not self.speed == (0, 0):
+        if (not self.speed == (0, 0)) or Mover.changed:
             other = Mover.all.check_same_pos(self)
             if other:
                 self.speed = tsoliasgame.vector2.multiply(2 * Purple.spd, other.__class__.direction)
@@ -35,6 +35,11 @@ class Moveable(tsoliasgame.Obj):
             self.start_shrink()  # start shrinking
             self.dead = True
             return True
+	
+        # collision with Switch
+        if SwitchEn.all.check_same_pos(self):
+            SwitchEn.action()
+            return False
 
         # collision with Teleporter_En
         other = TeleporterEn.all.check_same_pos(self)
@@ -46,7 +51,7 @@ class Moveable(tsoliasgame.Obj):
 
             for teleporter in TeleporterEn.all:
                 if not teleporter == other:
-                    teleporter.change_to(TeleporterActive, True)
+                    teleporter.change_to(TeleporterActive, True)  # all other teleporters become active and wait for click
             return True
 
         return False
@@ -79,7 +84,7 @@ class Moveable(tsoliasgame.Obj):
         self.start_animation((32, 32), 2, end_action=tsoliasgame.ANIMATION_STOP)
         self.paused = True  # disables update
         Purple.paused = True  # for blue too
-        self.speed = [0, 0]
+        self.speed = (0, 0)
         maingame.maingame.audio.sfx_suck.play()
 
 
@@ -114,6 +119,17 @@ class Purple(Moveable):
                         achievements.achievements["aheradrim"].main_value = 1
                         Purple.aheradrim = True
                         self.image = Images.aheradrim_image
+                        
+                # collision with Paint
+                other = Paint.all.check_same_pos(self)
+                if other:
+                    achievement = achievements.achievements["paint_collected"]
+                    achievement.main_value += 1
+
+                    maingame.maingame.audio.sfx_pickup.play()
+                    other.destroy()
+                    if len(Paint.all) == 0:
+                        Exit.all.get_sprite(0).enable()
 
                 if not self.on_grid_update():  # if update was not handled by parent
                     # handle it now
@@ -139,21 +155,6 @@ class Purple(Moveable):
                             if maingame.maingame.levels.jump_next():
                                 maingame.maingame.exit()  # exit game TODO: make a proper winning message
                             return
-
-                    # collision with Paint
-                    other = Paint.all.check_same_pos(self)
-                    if other:
-                        achievement = achievements.achievements["paint_collected"]
-                        achievement.main_value += 1
-
-                        maingame.maingame.audio.sfx_pickup.play()
-                        other.destroy()
-                        if len(Paint.all) == 0:
-                            Exit.all.get_sprite(0).enable()
-
-                    # collision with Switch
-                    if SwitchEn.all.check_same_pos(self):
-                        SwitchEn.action()
 
                     # collision with Tutorial
                     other = Tutorial.all.check_same_pos(self)
@@ -201,7 +202,7 @@ class Purple(Moveable):
                     self.collided = int(maingame.maingame.get_fps() * 0.3)
                     # and set self.collided so that we dont allow keypresses to work for ~500ms
 
-        self.collided -= 1
+	    self.collided -= 1
 
         # HANDLE ANIMATION
         self.on_update_end()
@@ -215,7 +216,7 @@ class Purple(Moveable):
                     self.animation_enabled = False
                     self.__blink -= 1
 
-        tsoliasgame.Obj.update(self)
+        tsoliasgame.Obj.update(self, not Purple.paused or "secret" in maingame.maingame.levels.current().description)
 
     def die(self):
         # update death achievement
@@ -275,7 +276,7 @@ class Rock(Moveable):
 
     def update(self):
         # almost same code with the Purple without having independent movement - only sliding ability
-        if not (self.position == self.previous_pos or self.paused):
+        if not (self.position == self.previous_pos or self.paused) or Mover.changed:
             if not self.collided and self.check_grid((32, 32)):  # checks grid
 
                 # again call parent update and then check if target position is occupied or if we are sliding
@@ -296,7 +297,7 @@ class Rock(Moveable):
 
         self.on_update_end()
 
-        tsoliasgame.Obj.update(self)
+        tsoliasgame.Obj.update(self, not self.paused)
 
 
 # L A Y E R 1
@@ -381,6 +382,7 @@ class Exit(tsoliasgame.Obj):
 
 
 class Mover(tsoliasgame.Obj):
+    changed = True
     direction = (0, 0)
 
     def __init__(self, image, layer=0, position=(0, 0), addtolevel=None):
@@ -430,6 +432,7 @@ class MoverR(Mover):
 
 
 class Switch(tsoliasgame.Obj):
+    pressed = False  # if any switch was pressed
     def __init__(self, layer=0, position=(0, 0), addtolevel=None):
         tsoliasgame.Obj.__init__(self, None, layer, position, usemask=False, addtolevel=addtolevel)
 
@@ -443,6 +446,7 @@ class SwitchEn(Switch):
 
     @staticmethod
     def action():
+        Switch.pressed = True
         for mover in Mover.all:
             if mover.__class__ == MoverU:
                 mover.change_to(MoverD)

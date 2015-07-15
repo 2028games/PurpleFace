@@ -191,10 +191,11 @@ class Obj(pygame.sprite.DirtySprite):
         It does nothing just override to use if needed"""
         pass
     
-    def update(self):
-        # M O V E M E N T
-        self.speed = vector2.add(self.speed, self.accel)
-        self.add_pos(self.speed)
+    def update(self, movement=True):
+        if movement:
+	    # M O V E M E N T
+	    self.speed = vector2.add(self.speed, self.accel)
+	    self.add_pos(self.speed)
         
         # A N I M A T I O N
         if self.animation_enabled:
