@@ -28,6 +28,7 @@ Thanasis Katsios
 h:Thanks to the Developers of
 Python
 Pygame
+Kubuntu
 PyCharm Community Edition
 Git
 Tiled
@@ -40,9 +41,13 @@ Audacity
 If I forgot anyone please remind me :)
 
 
+
 Thank you for playing PurpleFace
 
 and for watching the credits till the end :)
 
+
+
+h: Purpleface %version_string
 
 h: Copyleft 2028games 2015

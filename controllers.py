@@ -11,7 +11,8 @@ import tsoliasgame
 import pygame
 import objs
 import fonts
-from dialogs import question
+from dialogs import Question
+from dialogs import Message
 from settings import settings
 try:
     import pygame.mixer as mixer
@@ -77,6 +78,8 @@ class IntroController(Controller):
             return
 
         surface.blit(image, ((maingame.size[0] - image.get_width()) / 2, (maingame.size[1] - image.get_height()) / 2))
+        if self.frames > 2 * maingame.fps:
+            tsoliasgame.draw_text(surface, fonts.font_32, maingame.version_string, ((maingame.size[0] + image.get_width()) / 2 - 100, (maingame.size[1] + image.get_height()) / 2), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER, tsoliasgame.ALIGN_CENTER)
         self.frames += 1
 
 
@@ -111,6 +114,7 @@ class MainMenuController(Controller):
                                         rect=pygame.Rect(self.position[0], self.position[1] + 40 * i, 260, 40))
             self.buttons.add(button)
 
+        self.current_combo = []  # pressed keys - used for konami code
         mixer.music.stop()
 
     def event_handling(self):
@@ -123,9 +127,18 @@ class MainMenuController(Controller):
                 if self.mode == 1:
                     self.mode = 2
                 elif event.key == pygame.K_ESCAPE:
-                    self.action_exit(None)  # exit
+                   self.action_exit(None)  # exit
                 elif event.key == pygame.K_F11:
                     maingame.fullscreen = not maingame.fullscreen
+                elif self.test_konami(event.key):  # check for konami code
+                    achievements.achievements["konami"].main_value = 1  # unlock achievement
+                    maingame.debug_mode = not maingame.debug_mode  # toggle debug mode
+                    if maingame.debug_mode:
+                        settings.set("debug_mode", True)
+                        Message("Debug Mode Enabled", "All levels are now playable and you\ncan use [Ctrl + Click] in game\nto move to cursor position.")
+                    else:
+                        settings.set("debug_mode", False)
+                        Message("Debug Mode Disabled", "Debug mode is too cool for you?")
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 if self.mode == 1:
@@ -171,6 +184,24 @@ class MainMenuController(Controller):
                 tsoliasgame.draw_text(surface, fonts.font_26, "Click Level Selection to Start!",
                                       (self.position[0] + 400, self.position[1]),
                                       tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
+                
+        # DRAW ACHIEVEMENT
+        achievements.Achievement.draw_achievement(surface)
+                
+    def test_konami(self, current_key):
+        """tests if the konami code got pressed"""
+        konami = (pygame.K_UP, pygame.K_UP, pygame.K_DOWN, pygame.K_DOWN, 
+                  pygame.K_LEFT, pygame.K_RIGHT, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_b, pygame.K_a)
+        
+        if current_key == konami[len(self.current_combo)]:
+            self.current_combo.append(current_key)
+            if len(self.current_combo) == len(konami):
+                self.current_combo = []
+                return True
+            return False
+        
+        self.current_combo = []
+        return False
 
     @staticmethod
     def action_level_selection(pos):
@@ -611,10 +642,14 @@ class OptionsController(Controller):
         objs.Purple.spd = settings.get("blue_speed")
         self.fill_strings()
 
-    def action_fullscreen(self, pos):
+    def action_fullscreen(self, pos, question=True):
         settings.set("fullscreen", not settings.get("fullscreen"))
         maingame.fullscreen = settings.get("fullscreen")
         self.fill_strings()
+        maingame.draw(maingame.screen)
+        if question and not Question("Fullscreen Changed", 
+                                     "Graphics settings succesfully changed.\nAre the new settings okay?\n(Setting will be reset in %left seconds.)", 15 * maingame.fps).return_value:
+            self.action_fullscreen(pos, False)
 
     def action_quality(self, pos):
         settings.set("quality", not settings.get("quality"))
@@ -644,18 +679,63 @@ class OptionsController(Controller):
         settings.defaults()
         self.fill_strings()
 
-    @staticmethod
-    def action_clear_all_progress(pos):
-        if question.show("Clear All Progress?",
-                         "Are you sure you want to clear progress? \n This action cant be reversed."):
-            settings.set("levels_won", [])
+    def action_clear_all_progress(self, pos):
+        if Question("Clear All Progress?",
+                    "Are you sure you want to clear progress? \n This action cant be reversed.").return_value:
+            settings.defaults(True)  # reset settings
+            self.fill_strings()
             for level in maingame.levels:
-                level.won = False
+                level.won = False  # reset levels
+                
+            for key, achievement in achievements.achievements.iteritems():
+                achievement.main_value = settings.get(key)  # reset achievements
+                
+            Message("Reset completed", "Reset Done. \n Restart PurpleFace now pls.")
 
     @staticmethod
     def action_back(pos):
         settings.save()
         maingame.controller = maingame.previous_controller.__class__()
+        
+        
+class EndGameController(Controller):
+    def __init__(self):
+        """controls endgame screen"""
+        Controller.__init__(self)
+        maingame.paused = True
+        self.position = (maingame.size[0] / 2, 20)  # position of the menu
+        self.back_color = tsoliasgame.colors.dodgerblue
+        self.frame = 0  # to control blinking effect
+
+    def event_handling(self):
+        """handles pygame events"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # if x clicked
+                maingame.exit()  # exit
+
+            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONUP:  # any key pressed
+                maingame.controller = CreditsController()  # show credits
+
+    def draw(self, surface):
+        surface.fill(self.back_color)
+        tsoliasgame.draw_text(surface, fonts.font_44, "Main story Completed!", 
+                              (self.position[0], self.position[1]), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
+        tsoliasgame.draw_text(surface, fonts.font_32, 
+                              """Congratulations! You completed the main levels!
+Purpley is purple again and can now return to his hometown.
+If he wants to return to the racists who kicked him out just
+because he had different color than them. Perhaps he will
+continue his adventures in the rest of the world after all.
+
+Thank you for playing this amazing game. If you want to
+play more PurpleFace you can download new levels in the
+"Download More Levels" screen of the main menu.""", (self.position[0], self.position[1] + 44), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
+        
+        if (self.frame / maingame.fps) % 2 == 0:
+            tsoliasgame.draw_text(surface, fonts.font_26, "Press any key to continue!", 
+                                  (maingame.size[0] - 10, maingame.size[1] - 36), tsoliasgame.colors.white, tsoliasgame.ALIGN_RIGHT)
+            
+        self.frame += 1
 
 
 class HelpController(Controller):
@@ -683,6 +763,11 @@ class HelpController(Controller):
         button = tsoliasgame.Button(self.action_menu, rect=pygame.Rect(
             self.menu_position[0], self.menu_position[1], 150, 40 * len(self.items) - 1))
         self.buttons.add(button)
+        
+        # and another button for the movie reference achievement
+        button = tsoliasgame.Button(self.action_reference, rect=pygame.Rect(
+            self.dialog_position[0] - 140, self.dialog_position[1] + 114, 400, 40), debug=False)
+        self.buttons.add(button)
 
         mixer.music.stop()
 
@@ -706,6 +791,8 @@ class HelpController(Controller):
     def draw(self, surface):
         surface.fill(self.back_color)
         self.frame += 1
+        
+        self.buttons.draw(surface)
 
         # draw the side menu
         for i in range(len(self.items)):
@@ -719,9 +806,16 @@ class HelpController(Controller):
         pygame.draw.line(surface, tsoliasgame.colors.white, (self.menu_position[0] + 150, 0), (self.menu_position[0] + 150, maingame.size[1]), 4)
 
         getattr(help_dialogs, self.items[self.focus][1])(surface, self.dialog_position, frame=self.frame)
+        
+        # DRAW ACHIEVEMENT
+        achievements.Achievement.draw_achievement(surface)
 
     def action_menu(self, pos):
         self.focus = (pos[1] - self.menu_position[1]) / 40
+        
+    def action_reference(self, pos):
+        if self.focus == 4:
+            achievements.achievements["reference"].main_value = 1
 
     @staticmethod
     def action_back(pos):
@@ -1040,6 +1134,10 @@ class CreditsController(Controller):
             self.action_back()
 
     def generate_surface(self):
+        """Generates a surface that contains the credits text from credits.txt
+        Saves the surface to self.surface
+        and returns the height of the surface"""
+        
         if not os.path.exists("credits.txt"):
             return 0
 
@@ -1069,6 +1167,7 @@ class CreditsController(Controller):
                     space = 26
                     remove = 0
 
+                text = text.replace("%version_string", maingame.version_string)
                 tsoliasgame.draw_text(surface, font, text[remove:],
                                       (maingame.size[0] / 2, y), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
                 y += space
@@ -1077,12 +1176,9 @@ class CreditsController(Controller):
         self.surface = surface
         return y
 
-
-
     @staticmethod
     def action_back():
-        maingame.controller = maingame.previous_controller.__class__()
-
+        maingame.controller = MainMenuController()
 
 class VirtualKeypad(object):
     """A virtual keypad"""
@@ -1316,8 +1412,8 @@ class PauseMenu(object):
         
     @staticmethod
     def action_back():
-        if question.show("Leave level?",
-                         "Are you sure you want to return\n to level selection? \nCurrent level progress will be lost."):
+        if Question("Leave level?",
+                    "Are you sure you want to return\n to level selection? \nCurrent level progress will be lost.").return_value:
             maingame.paused = False
             maingame.controller = LevelSelectionController()
 
@@ -1331,7 +1427,7 @@ class PauseMenu(object):
 
     @staticmethod
     def action_exit():
-        if question.show("Exit?", "Are you sure you want to exit? \nCurrent level progress will be lost."):
+        if Question("Exit?", "Are you sure you want to exit? \nCurrent level progress will be lost.").return_value:
             maingame.exit()
 
 

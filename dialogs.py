@@ -6,7 +6,7 @@ import fonts
 
 
 class Question():
-    def __init__(self):
+    def __init__(self, title, text, autoexpire=-1, defaultchoice=False):
         self.surface = maingame.maingame.screen
         self.background = Images.question_image
         self.position = ((self.surface.get_width() - self.background.get_width()) / 2,
@@ -15,7 +15,9 @@ class Question():
         self.rect_yes = pygame.Rect(self.position[0], self.position[1] + 200, 198, 50)
         self.rect_no = pygame.Rect(self.position[0] + 202, self.position[1] + 200, 198, 50)
         
-    def show(self, title, text):
+        self.return_value = self.show(title, text, autoexpire, defaultchoice)
+        
+    def show(self, title, text, autoexpire, defaultchoice):
 
         previous_screen = self.surface.copy()  # i keep the last screen so that i can draw it again in every tick
 
@@ -33,6 +35,7 @@ class Question():
                 move_mode = 2  # no movement
 
             if move_mode == 2:  # the transition effect has ended
+                # event handling
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:  # immediately end game
                         maingame.maingame.exit()  # ask the game to exit
@@ -49,14 +52,21 @@ class Question():
                             return True
                         elif self.rect_no.collidepoint(event.pos):
                             return False
+                        
+                 # update
+                if autoexpire == 0:
+                    return defaultchoice
+                autoexpire -= 1
 
+            # draw
+            final_text = text.replace("%left", str(autoexpire / maingame.maingame.fps))
             self.surface.blit(previous_screen, (0, 0))
             self.surface.blit(self.background, (x, self.position[1]))
 
             tsoliasgame.draw_text(self.surface, fonts.font_44, title,
                                   [x + self.background.get_width() / 2, self.position[1] + 30],
                                   tsoliasgame.colors.green, tsoliasgame.ALIGN_CENTER, tsoliasgame.ALIGN_CENTER)
-            tsoliasgame.draw_text(self.surface, fonts.font_26, text,
+            tsoliasgame.draw_text(self.surface, fonts.font_26, final_text,
                                   [x + self.background.get_width() / 2, self.position[1] + 120],
                                   tsoliasgame.colors.green, tsoliasgame.ALIGN_CENTER, tsoliasgame.ALIGN_CENTER)
             tsoliasgame.draw_text(self.surface, fonts.font_36, "Yes",
@@ -72,13 +82,15 @@ class Question():
 
 
 class Message():
-    def __init__(self):
+    def __init__(self, title, text):
         self.surface = maingame.maingame.screen
         self.background = Images.message_image
         self.position = ((self.surface.get_width() - self.background.get_width()) / 2,
                          (self.surface.get_height() - self.background.get_height()) / 2)
         self.clock = pygame.time.Clock()
         self.rect_ok = pygame.Rect(self.position[0] + 100, self.position[1] + 200, 200, 50)
+        
+        self.return_value = self.show(title, text)
 
     def show(self, title, text):
 
@@ -130,6 +142,3 @@ class Message():
 
             self.clock.tick(maingame.maingame.fps)
 
-
-question = Question()
-message = Message()

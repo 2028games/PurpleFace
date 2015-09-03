@@ -78,7 +78,7 @@ def itemsi(surface, position, title="Items", frame=0):
 Wall: Does what walls usually do...
 Paint: You have to collect those
 Exit: Get there to finish the level\n  (activates after you collect all paint splatters)
-Movers: They force movement in one direction
+Movers: They accelerate you in one direction
 Reversers: They reverse all movers
 Ice: Causes you to slide
 Rock: You can push them around"""
@@ -111,9 +111,11 @@ Rock: You can push them around"""
 def itemsii(surface, position, title="Items", frame=0):
     description_string = \
         """Black Hole: Sucks everything inside killing them
-  (or transfering them to the 5th dimension...)
+  (or transfering them inside a library...)
 Wood: You can step on it once, but it will break
   when you leave revealing the tile below
+Wooden Box: Can be destroyed when hit with the 
+  extra speed from a mover
 Teleporter: Teleports you to another teleporter
   of your choice and gets disabled afterwards
 """
@@ -126,6 +128,8 @@ Teleporter: Teleports you to another teleporter
 
     surface.blit(Images.wood_image, (position[0] - 180, position[1] + 148))
 
-    surface.blit(Images.teleporter_image, (position[0] - 220, position[1] + 216))
-    surface.blit(Images.teleporter_dis_image, (position[0] - 180, position[1] + 216))
+    surface.blit(Images.wooden_box_image, (position[0] - 180, position[1] + 216))
+    
+    surface.blit(Images.teleporter_image, (position[0] - 220, position[1] + 284))
+    surface.blit(Images.teleporter_dis_image, (position[0] - 180, position[1] + 284))
 

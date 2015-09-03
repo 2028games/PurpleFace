@@ -30,6 +30,7 @@ class Achievement(object):
 
     def __init__(self, start_value, check, levels):
         self.__main_value = start_value
+        self.start_value = start_value
         self.check = check
         self.levels = levels
         self.current_level = self.get_current_level()
@@ -51,6 +52,10 @@ class Achievement(object):
             Achievement.achievement_to_draw = self
             return True
         return False
+    
+    def reset(self):
+        self.main_value = self.start_value
+        print "set to " + str(self.main_value)
 
     @staticmethod
     def draw_achievement(surface):
@@ -78,9 +83,9 @@ class Achievement(object):
 
 achievements = collections.OrderedDict([
     ("paint_collected", Achievement(settings.get("paint_collected"), lambda current, x: current >= x,
-                                    (AchievementLevel(20, "Novice Collector", "Collect 20 paint splatters", Images.medal1_image),
-                                     AchievementLevel(50, "Average Collector", "Collect 50 paint splatters", Images.medal2_image),
-                                     AchievementLevel(100, "Expert Collector", "Collect 100 paint splatters", Images.medal3_image)))),
+                                    (AchievementLevel(50, "Novice Collector", "Collect 50 paint splatters", Images.medal1_image),
+                                     AchievementLevel(100, "Average Collector", "Collect 100 paint splatters", Images.medal2_image),
+                                     AchievementLevel(200, "Expert Collector", "Collect 200 paint splatters", Images.medal3_image)))),
 
     ("times_restarted", Achievement(settings.get("times_restarted"), lambda current, x: current >= x,
                                     (AchievementLevel(10, "A Few Fails", "Restart a total of 10 times", Images.medal1_image),
@@ -90,7 +95,7 @@ achievements = collections.OrderedDict([
     ("times_died", Achievement(settings.get("times_died"), lambda current, x: current >= x,
                                (AchievementLevel(10, "A Few Deaths", "Die a total of 10 times", Images.medal1_image),
                                 AchievementLevel(20, "More Deaths", "Die a total of 20 times", Images.medal2_image),
-                                AchievementLevel(40, "Lots of deaths", "Die a total of 40 times", Images.medal3_image)))),
+                                AchievementLevel(50, "Lots of deaths", "Die a total of 50 times", Images.medal3_image)))),
 
     ("total_time", Achievement(settings.get("total_time"), lambda current, x: current >= x,
                                (AchievementLevel(600, "10 Minutes", "Play a total of 10 minutes", Images.medal1_image),
@@ -98,10 +103,16 @@ achievements = collections.OrderedDict([
                                 AchievementLevel(86400, "Lost a day!", "Play a total of 24 hours", Images.medal3_image)))),
 
     ("total_dist", Achievement(settings.get("total_dist"), lambda current, x: current >= x,
-                               (AchievementLevel(1024, "A few pixels", "Travel a total of 1024 pixels", Images.medal1_image),
-                                AchievementLevel(4096, "More pixels", "Travel a total of 4096 pixels", Images.medal2_image),
-                                AchievementLevel(40000, "Round the pixel earth!", "Travel a total of 40000 pixels", Images.medal3_image)))),
+                               (AchievementLevel(4096, "A few pixels", "Travel a total of 4096 pixels", Images.medal1_image),
+                                AchievementLevel(16000, "More pixels", "Travel a total of 16000 pixels", Images.medal2_image),
+                                AchievementLevel(100000, "Round the pixel earth!", "Travel a total of 100000 pixels", Images.medal3_image)))),
 
+    ("reference", Achievement(settings.get("reference"), lambda current, x: current >= x,
+                              (AchievementLevel(1, "Movie maniac", "Discover a movie reference", Images.medal_reference_image),))),
+    
+    ("konami", Achievement(settings.get("konami"), lambda current, x: current >= x,
+                              (AchievementLevel(1, "Cheater", "Discover a cheat", Images.medal_konami_image),))),
+    
     ("aheradrim", Achievement(settings.get("aheradrim"), lambda current, x: current >= x,
                               (AchievementLevel(1, 'The Aheradrim "Feature"!', "Discover a hidden secret", Images.medal_aheradrim_image),)))
 

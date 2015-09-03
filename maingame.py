@@ -21,22 +21,25 @@ class MainGame(tsoliasgame.Game):
 
     @fullscreen.setter
     def fullscreen(self, value):
+        # changes fullscreen state
         self.__fullscreen = value
-        size = pygame.display.list_modes()[0]
-        if value:
+        size = pygame.display.list_modes()[0]  # current screen size
+        if value:  # go fulscreen
             height = 600
             width = int(height * size[0] / float(size[1]))
             size = (width, height)
             pygame.display.set_mode(size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
-        else:
+        else:  # go windowed
             height = 480
             width = 800
             if android:
                 width = int(height * size[0] / float(size[1]))
             size = (width, height)
             pygame.display.set_mode(size)
+            
         info = pygame.display.Info()
-        self.size = (info.current_w, info.current_h)
+        self.size = (info.current_w, info.current_h)  # update size
+        
         print("new size: " + str(self.size))
 
 
@@ -53,6 +56,10 @@ class MainGame(tsoliasgame.Game):
     def __init__(self, fps, size):
         global maingame
         maingame = self  # reference to be used by other objects
+        
+        #some info about the game
+        self.version = 900
+        self.version_string = "Psit Ksereis Beta Edition"
 
         # make main levelgroup
         levels = MultiLevelGroup(tsoliasgame.View((0, 0)))  # main level group

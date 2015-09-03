@@ -69,6 +69,8 @@ class Images:
     medal1_image = load_image("pngs/medal1.png")
     medal2_image = load_image("pngs/medal2.png")
     medal3_image = load_image("pngs/medal3.png")
+    medal_reference_image = load_image("pngs/medal_reference.png")
+    medal_konami_image = load_image("pngs/medal_konami.png")
     medal_aheradrim_image = load_image("pngs/medal_aheradrim.png")
     medal_hidden_image = load_image("pngs/medal_hidden.png")
 

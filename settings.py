@@ -45,11 +45,14 @@ class Settings(tsoliasgame.settings.Settings):
             self.set("unlocked", 1)  # number of unlocked levels
             self.set("levels_won", [])  # list of won levels
 
+            # achievements
             self.set("paint_collected", 0)
             self.set("times_restarted", 0)
             self.set("times_died", 0)
             self.set("total_time", 0)
             self.set("total_dist", 0)
+            self.set("reference", 0)
+            self.set("konami", 0)
             self.set("aheradrim", 0)
 
 

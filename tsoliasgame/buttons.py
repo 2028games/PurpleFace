@@ -2,7 +2,7 @@ import pygame
 
 
 class Button(object):
-    def __init__(self, action, image=None, pos=None, rect=None, visible=True):
+    def __init__(self, action, image=None, pos=None, rect=None, visible=True, debug=False):
         """a button class for pygame
 
         :param action: action to be made
@@ -10,10 +10,12 @@ class Button(object):
         :param pos: position to draw - can be None if rect is specified
         :param rect: collision rect - can be None if bot image and pos are specified
         :param visible: if image should be drawn
+        :param debug: if debug will draw rect boundaries
         """
         self.action = action
         self.image = image
         self.visible = visible
+        self.debug = debug
 
         if pos:
             self.draw_pos = pos
@@ -47,6 +49,9 @@ class Button(object):
         """
         if self.image and self.visible:
             surface.blit(self.image, self.draw_pos)
+        
+        if self.debug:
+            pygame.draw.rect(surface, (255, 0, 0), self.rect)
 
 
 class ButtonGroup(object):

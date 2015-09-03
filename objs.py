@@ -159,7 +159,7 @@ class Purple(Moveable):
                     # collision with Tutorial
                     other = Tutorial.all.check_same_pos(self)
                     if other and not other.inactive:
-                        dialogs.message.show("Tutorial", Tutorial.messages[Tutorial.current])
+                        dialogs.Message("Tutorial", Tutorial.messages[Tutorial.current])
                         Tutorial.current = min(Tutorial.current + 1, len(Tutorial.messages) - 1)
                         other.destroy()
 

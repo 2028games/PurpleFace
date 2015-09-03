@@ -13,25 +13,26 @@ def rename(location, step = 1):
 	print('renamed "%s" to "%s"' % (location, new_location))
 
 def main():
-	step = 1
-	if len(sys.argv) == 1:
-		location = raw_input()
-		step = input()
-	
 	if len(sys.argv) > 1:
 		location = sys.argv[1]
+	else:
+            print "Invalid Args"
+            return 1
+        
 	if len(sys.argv) > 2:
-		step = int(sys.argv[2])
+            step = int(sys.argv[2])
+        else:
+            step = 1
 	
 	if step == 0:
-		return 0;
+		return 0
 		
 	if os.path.exists(location):
 		rename(location, step)
-		return 0;
+		return 0
 	else:
 		print('file "%s" does not exist' % location)
-		return 1;
+		return 1
 		
 if __name__ == "__main__":
 	main()
