@@ -69,17 +69,22 @@ class IntroController(Controller):
     def draw(self, surface):
         surface.fill(self.back_color)
 
+        # choose image to draw
         if self.frames <= 2 * maingame.fps:
             image = Images.c_logo_image
         elif self.frames <= 4 * maingame.fps:
             image = Images.g_logo_image
         else:
-            maingame.controller = MainMenuController()
+            maingame.controller = MainMenuController()  # continue
             return
 
-        surface.blit(image, ((maingame.size[0] - image.get_width()) / 2, (maingame.size[1] - image.get_height()) / 2))
+        surface.blit(image, ((maingame.size[0] - image.get_width()) / 2, (maingame.size[1] - image.get_height()) / 2))  # draw image
+        
+        # draw version string
         if self.frames > 2 * maingame.fps:
-            tsoliasgame.draw_text(surface, fonts.font_32, maingame.version_string, ((maingame.size[0] + image.get_width()) / 2 - 100, (maingame.size[1] + image.get_height()) / 2), tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER, tsoliasgame.ALIGN_CENTER)
+            tsoliasgame.draw_text(surface, fonts.font_20, maingame.version_string, 
+                                  ((maingame.size[0] + image.get_width()) / 2 - 100, (maingame.size[1] + image.get_height()) / 2),
+                                  tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER, tsoliasgame.ALIGN_CENTER)
         self.frames += 1
 
 
