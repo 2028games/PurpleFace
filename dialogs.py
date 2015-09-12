@@ -49,8 +49,10 @@ class Question():
 
                     elif event.type == pygame.MOUSEBUTTONUP:
                         if self.rect_yes.collidepoint(event.pos):
+                            maingame.maingame.audio.sfx_click.play()
                             return True
                         elif self.rect_no.collidepoint(event.pos):
+                            maingame.maingame.audio.sfx_click.play()
                             return False
                         
                  # update
@@ -123,6 +125,7 @@ class Message():
 
                     elif event.type == pygame.MOUSEBUTTONUP:
                         if self.rect_ok.collidepoint(event.pos):
+                            maingame.maingame.audio.sfx_click.play()
                             return True
 
             self.surface.blit(previous_screen, (0, 0))

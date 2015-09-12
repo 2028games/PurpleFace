@@ -2,7 +2,7 @@ import pygame
 
 
 class Button(object):
-    def __init__(self, action, image=None, pos=None, rect=None, visible=True, debug=False):
+    def __init__(self, action, image=None, pos=None, rect=None, visible=True, sound=None, debug=False):
         """a button class for pygame
 
         :param action: action to be made
@@ -10,11 +10,13 @@ class Button(object):
         :param pos: position to draw - can be None if rect is specified
         :param rect: collision rect - can be None if bot image and pos are specified
         :param visible: if image should be drawn
+        :param sound: sound to play when clicked
         :param debug: if debug will draw rect boundaries
         """
         self.action = action
         self.image = image
         self.visible = visible
+        self.sound = sound
         self.debug = debug
 
         if pos:
@@ -35,8 +37,9 @@ class Button(object):
         :param pos: click position
         """
 
-        # noinspection PyArgumentList
         if self.rect.collidepoint(pos):
+	    if self.sound:
+		self.sound.play()
             self.action(pos)
             return True
         else:

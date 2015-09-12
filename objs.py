@@ -180,6 +180,7 @@ class Purple(Moveable):
                             self.speed = (0, 0)
                         else:
                             other.destroy()
+                            maingame.maingame.audio.sfx_break.play()
 
             else:  # not on grid
                 other = pygame.sprite.spritecollideany(self, Rock.all,

@@ -111,9 +111,10 @@ class MainMenuController(Controller):
         # and create a button for each item in the list
         for i in range(len(self.items)):
             button = tsoliasgame.Button(self.items[i].action,
-                                        rect=pygame.Rect(self.position[0], self.position[1] + 40 * i, 260, 40))
+                                        rect=pygame.Rect(self.position[0], self.position[1] + 40 * i, 260, 40), sound=maingame.audio.sfx_click)
             self.buttons.add(button)
 
+        self.small_logo = pygame.transform.scale(Images.g_logo_image, (360, 240))
         self.current_combo = []  # pressed keys - used for konami code
         mixer.music.stop()
 
@@ -159,6 +160,7 @@ class MainMenuController(Controller):
                 self.blink *= -1
             self.blink -= 1
         else:
+            surface.blit(self.small_logo, (self.position[0] + 280, 150))
             for i in range(len(self.items)):
                 tsoliasgame.draw_text(surface, fonts.font_36, self.items[i].item,
                                       (self.position[0], self.position[1] + 40 * i), tsoliasgame.colors.white)
@@ -185,8 +187,8 @@ class MainMenuController(Controller):
                                       (self.position[0] + 400, self.position[1]),
                                       tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
                 
-        # DRAW ACHIEVEMENT
-        achievements.Achievement.draw_achievement(surface)
+            # DRAW ACHIEVEMENT
+            achievements.Achievement.draw_achievement(surface)
                 
     def test_konami(self, current_key):
         """tests if the konami code got pressed"""
@@ -259,7 +261,7 @@ class LevelDownloadController(Controller):
         self.download_list = []
         self.main_thread = None
 
-        self.btn_list = tsoliasgame.Button(self.action_list, self.position)
+        self.btn_list = tsoliasgame.Button(self.action_list, self.position, sound=maingame.audio.sfx_click)
         self.buttons.add(self.btn_list)
         self.action_refresh(None)
 
@@ -365,17 +367,17 @@ class LevelSelectionController(Controller):
         self.buttons = tsoliasgame.ButtonGroup()
 
         self.btn_start = tsoliasgame.Button(self.action_start, Images.start_image,
-                                            ((self.image_size[0] - 256) / 2, (self.image_size[1] - 128) / 2))
+                                            ((self.image_size[0] - 256) / 2, (self.image_size[1] - 128) / 2), sound=maingame.audio.sfx_click)
 
-        btn_up = tsoliasgame.Button(self.action_up, Images.arrowu_image, (self.image_size[0] + 26, 4))
+        btn_up = tsoliasgame.Button(self.action_up, Images.arrowu_image, (self.image_size[0] + 26, 4), sound=maingame.audio.sfx_click)
 
-        btn_down = tsoliasgame.Button(self.action_down, Images.arrowd_image, (self.image_size[0] + 26, 350))
+        btn_down = tsoliasgame.Button(self.action_down, Images.arrowd_image, (self.image_size[0] + 26, 350), sound=maingame.audio.sfx_click)
 
         btn_levels = tsoliasgame.Button(self.action_levels, None,
-                                        rect=pygame.Rect(self.image_size[0] + 20, 54, 80, 36 * 8))
+                                        rect=pygame.Rect(self.image_size[0] + 20, 54, 80, 36 * 8), sound=maingame.audio.sfx_click)
 
         btn_switch = tsoliasgame.Button(self.action_switch, Images.switch_image,
-                                        (maingame.size[0] - 48, 8))
+                                        (maingame.size[0] - 48, 8), sound=maingame.audio.sfx_click)
 
         self.buttons.add(self.btn_start, btn_up, btn_down, btn_levels, btn_switch)
         self.cur_level_index = 0
@@ -571,7 +573,7 @@ class OptionsController(Controller):
         # and create a button for each item in the list
         for i in range(len(self.items)):
             button = tsoliasgame.Button(self.items[i].action,
-                                        rect=pygame.Rect(self.position[0], self.position[1] + 40 * i, 400, 40))
+                                        rect=pygame.Rect(self.position[0], self.position[1] + 40 * i, 400, 40), sound=maingame.audio.sfx_click)
             self.buttons.add(button)
 
     def event_handling(self):
@@ -744,7 +746,7 @@ class HelpController(Controller):
         Controller.__init__(self)
         maingame.paused = True
         self.menu_position = (10, 100)
-        self.dialog_position = (500, 20)
+        self.dialog_position = (460, 20)
         self.buttons = tsoliasgame.ButtonGroup()  # buttons group
         self.back_color = tsoliasgame.colors.dodgerblue
         self.focus = 0  # focused item
@@ -761,7 +763,7 @@ class HelpController(Controller):
 
         # and create a big button
         button = tsoliasgame.Button(self.action_menu, rect=pygame.Rect(
-            self.menu_position[0], self.menu_position[1], 150, 40 * len(self.items) - 1))
+            self.menu_position[0], self.menu_position[1], 150, 40 * len(self.items) - 1), sound=maingame.audio.sfx_click)
         self.buttons.add(button)
         
         # and another button for the movie reference achievement
@@ -803,7 +805,7 @@ class HelpController(Controller):
             tsoliasgame.draw_text(surface, fonts.font_26, self.items[i][0],
                                   (self.menu_position[0], self.menu_position[1] + 40 * i), color)
 
-        pygame.draw.line(surface, tsoliasgame.colors.white, (self.menu_position[0] + 150, 0), (self.menu_position[0] + 150, maingame.size[1]), 4)
+        pygame.draw.line(surface, tsoliasgame.colors.white, (self.menu_position[0] + 110, 0), (self.menu_position[0] + 110, maingame.size[1]), 4)
 
         getattr(help_dialogs, self.items[self.focus][1])(surface, self.dialog_position, frame=self.frame)
         
@@ -1328,9 +1330,9 @@ class PauseMenu(object):
 
         self.buttons = tsoliasgame.ButtonGroup()
         self.buttons.add(
-            tsoliasgame.Button(self.action_left, rect=pygame.Rect(self.center[0] - 84, self.center[1] - 20, 40, 40)),
-            tsoliasgame.Button(self.action_center, rect=pygame.Rect(self.center[0] - 32, self.center[1] - 32, 64, 64)),
-            tsoliasgame.Button(self.action_right, rect=pygame.Rect(self.center[0] + 44, self.center[1] - 20, 40, 40)))
+            tsoliasgame.Button(self.action_left, rect=pygame.Rect(self.center[0] - 84, self.center[1] - 20, 40, 40), sound=maingame.audio.sfx_click),
+            tsoliasgame.Button(self.action_center, rect=pygame.Rect(self.center[0] - 32, self.center[1] - 32, 64, 64), sound=maingame.audio.sfx_click),
+            tsoliasgame.Button(self.action_right, rect=pygame.Rect(self.center[0] + 44, self.center[1] - 20, 40, 40), sound=maingame.audio.sfx_click))
         
         self.swiped = False
         self.start_pos = (0, 0)
