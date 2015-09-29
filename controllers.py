@@ -14,10 +14,6 @@ import fonts
 from dialogs import Question
 from dialogs import Message
 from settings import settings
-try:
-    import pygame.mixer as mixer
-except ImportError:
-    import android.mixer as mixer
 
 
 def bool_to_string(a, true_string="Yes", false_string="No"):
@@ -121,7 +117,7 @@ class MainMenuController(Controller):
 
         self.small_logo = pygame.transform.scale(Images.g_logo_image, (360, 240))
         self.current_combo = []  # pressed keys - used for konami code
-        mixer.music.stop()
+        pygame.mixer.music.stop()
 
     def event_handling(self):
         """handles pygame events"""
@@ -254,7 +250,7 @@ class LevelDownloadController(Controller):
                 os.mkdir(self.local_dir)
             except OSError:
                 # might need elevated privileges
-                dialogs.message.show("Os Error", "Elevated privileges might be needed for this action.")
+                Message("Os Error", "Elevated privileges might be needed for this action.")
                 self.action_back(None)
 
         maingame.levels.pick_directory(self.local_dir)  # will work with the downloaded levels dir
@@ -311,7 +307,7 @@ class LevelDownloadController(Controller):
             response = urllib2.urlopen(self.online_dir + "list")
             
         except urllib2.URLError:
-            dialogs.message.show("Connection Error", "A connection error occured:(\n Try again later.")
+            Message("Connection Error", "A connection error occured:(\n Try again later.")
             return 1
 
         level_file = response.read()
@@ -347,7 +343,7 @@ class LevelDownloadController(Controller):
                 maingame.levels.add(destination)
                 self.action_refresh(None)
             except IOError:
-                dialogs.message.show("Connection Error", "A connection error occured:(\n Try again later.")
+                Message("Connection Error", "A connection error occured:(\n Try again later.")
                 return 1
 
 
@@ -403,7 +399,7 @@ class LevelSelectionController(Controller):
 
         objs.Purple.colorize_images(min(1.0, float(self.unlocked - 1) / len(maingame.levels)))
 
-        mixer.music.stop()
+        pygame.mixer.music.stop()
         self.level_changed()
     
     def event_handling(self):
@@ -450,7 +446,7 @@ class LevelSelectionController(Controller):
                 self.cur_level_index = i
                 font = fonts.font_44
                 color = tsoliasgame.colors.black
-                extra_x = 28  # focused item lock / tick will be drawn further away
+                extra_x = 28  # focused item lock or tick will be drawn further away
             else:
                 font = fonts.font_32
                 color = self.text_color
@@ -464,7 +460,7 @@ class LevelSelectionController(Controller):
 
             # next code draws a lock next to locked levels or a tick next to won levels
             image = None
-            if i >= self.unlocked:
+            if i >= self.unlocked and maingame.levels.current_directory_index() == 0:  # if level locked and we are at the default level group
                 image = self.img_lock
             else:
                 if not hasattr(i_level, "won"):  # if we dont already know if the current level was won
@@ -476,7 +472,7 @@ class LevelSelectionController(Controller):
                 surface.blit(image, (text_x + 98 + extra_x, text_y - 20))
 
         # blink start button
-        if self.cur_level_index >= self.unlocked:
+        if self.cur_level_index >= self.unlocked and maingame.levels.current_directory_index() == 0:
             self.btn_start.visible = False
         else:
             if self.blink == 0:
@@ -524,7 +520,7 @@ class LevelSelectionController(Controller):
         return level.won
 
     def action_start(self, pos):
-        if self.cur_level_index < self.unlocked or maingame.debug_mode:
+        if self.cur_level_index < self.unlocked or maingame.levels.current_directory_index() != 0 or maingame.debug_mode:
             maingame.controller = GameplayController()
 
     @staticmethod
@@ -679,7 +675,7 @@ class OptionsController(Controller):
         except ValueError:  # occurs if current setting is not in the list of choices
             value = choices[0]
         settings.set("music", value)
-        mixer.music.set_volume(value)
+        pygame.mixer.music.set_volume(value)
         self.fill_strings()
 
     def action_defaults(self, pos):
@@ -776,7 +772,7 @@ class HelpController(Controller):
             self.dialog_position[0] - 140, self.dialog_position[1] + 114, 400, 40), debug=False)
         self.buttons.add(button)
 
-        mixer.music.stop()
+        pygame.mixer.music.stop()
 
     def event_handling(self):
         """handles pygame events"""
@@ -869,11 +865,11 @@ class GameplayController(Controller):
         self.steps = 0  # counts total steps passed
 
         # load music
-        mixer.music.unpause()
-        if not mixer.music.get_busy():
-            mixer.music.load("audio/pleasantcreek.ogg")
-            mixer.music.play(-1)
-        mixer.music.set_volume(settings.get("music"))
+        pygame.mixer.music.unpause()
+        if not pygame.mixer.music.get_busy():
+            pygame.mixer.music.load("audio/pleasantcreek.ogg")
+            pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(settings.get("music"))
             
         self.level_changed()
         
@@ -1033,7 +1029,7 @@ class AchievementsController(Controller):
             self.position[0] - self.line_width / 2 * self.size[0], self.position[1], self.size[0] * self.line_width, 400))
         self.buttons.add(button)
 
-        mixer.music.stop()
+        pygame.mixer.music.stop()
 
     def event_handling(self):
         """handles pygame events"""
@@ -1114,9 +1110,9 @@ class CreditsController(Controller):
         self.surface_height = self.generate_surface()
 
         # start music
-        mixer.music.load("audio/pleasantcreek.ogg")
-        mixer.music.play(-1)
-        mixer.music.set_volume(settings.get("music"))
+        pygame.mixer.music.load("audio/pleasantcreek.ogg")
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(settings.get("music"))
 
     def event_handling(self):
         """handles pygame events"""
@@ -1135,7 +1131,7 @@ class CreditsController(Controller):
         if self.surface:
             surface.blit(self.surface, (0, self.y))
         else:
-            dialogs.message.show("Error", "An Error occured! Credits could not be displayed.")
+            Message("Error", "An Error occured! Credits could not be displayed.")
         self.y -= 1
         if -1 * self.y > self.surface_height:
             self.action_back()

@@ -3,6 +3,7 @@ import dialogs
 import tsoliasgame
 import pygame
 import maingame
+import controllers
 import achievements
 from settings import settings
 from images import Images
@@ -152,8 +153,11 @@ class Purple(Moveable):
 
                             settings.save()  # and save
 
-                            if maingame.maingame.levels.jump_next():
-                                maingame.maingame.exit()  # exit game TODO: make a proper winning message
+                            if maingame.maingame.levels.jump_next():  # reached the end
+                                if maingame.maingame.levels.current_directory_index() == 0:
+                                    maingame.maingame.controller = controllers.EndGameController()  # end game screen
+                                else:
+                                    maingame.maingame.controller = controllers.LevelSelectionController()
                             return
 
                     # collision with Tutorial
@@ -242,17 +246,22 @@ class Purple(Moveable):
 
     @staticmethod
     def colorize_images(blue_factor):
+        """changes the color of purpleface images to the desired"""
+        new_color = (160, 0, int(blue_factor * 160))
         new_image = Images.blue_blink_original.copy()
-        pixel_array = pygame.PixelArray(new_image)
-        pixel_array.replace((0, 0, 255), (160, 0, int(blue_factor * 160)), 0, (1.0, 1.0, 0))
-        pixel_array = None
+        for i in xrange(new_image.get_width()):
+            for j in xrange(new_image.get_height()):
+                if new_image.get_at((i, j)) == (0, 0, 255):
+                    new_image.set_at((i, j), new_color)
         Images.blue_blink_image.blit(new_image, (0, 0))
         Images.blue_blink_image.convert()
-
+        
+        new_color = (160, 0, int(blue_factor * 160))
         new_image = Images.blue_shrink_original.copy()
-        pixel_array = pygame.PixelArray(new_image)
-        pixel_array.replace((0, 0, 255), (160, 0, int(blue_factor * 160)), 0, (1.0, 1.0, 0))
-        pixel_array = None
+        for i in xrange(new_image.get_width()):
+            for j in xrange(new_image.get_height()):
+                if new_image.get_at((i, j)) == (0, 0, 255):
+                    new_image.set_at((i, j), new_color)
         Images.blue_shrink_image.blit(new_image, (0, 0))
         Images.blue_shrink_image.convert()
 

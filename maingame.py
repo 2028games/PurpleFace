@@ -23,8 +23,8 @@ class MainGame(tsoliasgame.Game):
     def fullscreen(self, value):
         # changes fullscreen state
         self.__fullscreen = value
-        size = pygame.display.list_modes()[0]  # current screen size
         if value:  # go fulscreen
+            size = pygame.display.list_modes()[0]  # current screen size
             height = 600
             width = int(height * size[0] / float(size[1]))
             size = (width, height)
@@ -32,8 +32,6 @@ class MainGame(tsoliasgame.Game):
         else:  # go windowed
             height = 480
             width = 800
-            if android:
-                width = int(height * size[0] / float(size[1]))
             size = (width, height)
             pygame.display.set_mode(size)
             
@@ -53,7 +51,7 @@ class MainGame(tsoliasgame.Game):
         self.previous_controller = self.__controller
         self.__controller = value
 
-    def __init__(self, fps, size):
+    def __init__(self, fps, size, sdl2):
         global maingame
         maingame = self  # reference to be used by other objects
         
@@ -70,6 +68,7 @@ class MainGame(tsoliasgame.Game):
         self.__fullscreen = False
         pygame.display.set_icon(pygame.image.load("pngs/purple.png"))
         tsoliasgame.Game.__init__(self, fps, levels, size)
+        self.sdl2 = sdl2
         pygame.display.set_caption("PurpleFace")
         self.fullscreen = settings.get("fullscreen")
         tsoliasgame.load_module("objs")

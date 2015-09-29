@@ -60,8 +60,7 @@ def more_info(surface, position, title="More Info", frame=0):
 through each level, while collecting all the
 splatters of blue paint      . After that you
 have to guide him safely to the exit       to
-advance to the next level.
-"""
+advance to the next level."""
     tsoliasgame.draw_text(surface, fonts.font_44, title, position,
                           tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
     tsoliasgame.draw_text(surface, fonts.font_26, description_string, (position[0], position[1] + 80),
@@ -117,8 +116,7 @@ Wood: You can step on it once, but it will break
 Wooden Box: Can be destroyed when hit with the 
   extra speed from a mover
 Teleporter: Teleports you to another teleporter
-  of your choice and gets disabled afterwards
-"""
+  of your choice and gets disabled afterwards"""
     tsoliasgame.draw_text(surface, fonts.font_44, title, position,
                           tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER)
     tsoliasgame.draw_text(surface, fonts.font_26, description_string, (position[0] - 140, position[1] + 80),

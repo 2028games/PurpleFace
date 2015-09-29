@@ -1,14 +1,14 @@
-import pygame.mixer as mixer
+import pygame
 from settings import settings
 
 
 class Audio:
     def __init__(self):
-        self.sfx_suck = mixer.Sound("audio/suck.ogg")
-        self.sfx_click = mixer.Sound("audio/click.ogg")
-        self.sfx_break = mixer.Sound("audio/breaking_wood.ogg")
-        self.sfx_push = mixer.Sound("audio/rock_moved.ogg")
-        self.sfx_pickup = mixer.Sound("audio/pickup.ogg")
+        self.sfx_suck = pygame.mixer.Sound("audio/suck.ogg")
+        self.sfx_click = pygame.mixer.Sound("audio/click.ogg")
+        self.sfx_break = pygame.mixer.Sound("audio/breaking_wood.ogg")
+        self.sfx_push = pygame.mixer.Sound("audio/rock_moved.ogg")
+        self.sfx_pickup = pygame.mixer.Sound("audio/pickup.ogg")
 
     def set_volume(self):
         sfx = settings.get("sfx")
