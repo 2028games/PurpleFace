@@ -2,3 +2,7 @@
 *.pyc
 settings.txt
 .directory
+.kateproject
+.kateproject.d/
+.kdev4/
+PurpleFace.kdev4
