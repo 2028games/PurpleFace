@@ -243,3 +243,8 @@ a {
 @media screen and (max-width: 42em) {
   .site-footer {
     font-size: 0.9rem; } }
+
+.code-box {
+  border: 1px solid green ;
+  background-color: #f2efcb
+}
