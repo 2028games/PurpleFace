@@ -221,7 +221,7 @@ class Purple(Moveable):
                     self.animation_enabled = False
                     self.__blink -= 1
 
-        tsoliasgame.Obj.update(self, not Purple.paused or "secret" in maingame.maingame.levels.current().description)
+        tsoliasgame.Obj.update(self, not Purple.paused or "secret" in maingame.maingame.levels.current().description and self.position[0] <= 256)
 
     def die(self):
         # update death achievement
