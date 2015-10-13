@@ -6,3 +6,5 @@ settings.txt
 .kateproject.d/
 .kdev4/
 PurpleFace.kdev4
+*.pdn
+make_exe.py

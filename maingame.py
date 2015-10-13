@@ -56,7 +56,7 @@ class MainGame(tsoliasgame.Game):
         maingame = self  # reference to be used by other objects
         
         #some info about the game
-        self.version = 900
+        self.version = 902
         self.version_string = "Psit Ksereis Beta Edition"
 
         # make main levelgroup
