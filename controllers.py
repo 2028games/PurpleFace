@@ -237,12 +237,14 @@ class MainMenuController(Controller):
     @staticmethod
     def action_update(pos):
         if Question("Update PurpleFace?", "PurpleFace will now exit to get updated.\nIs this OK?"):
+            updater = os.path.join(os.path.dirname(os.path.realpath(__file__)), "updater.py")
+            print updater
             try:
-                subprocess.Popen([sys.executable, "updater.py"], creation_flags=CREATE_NEW_CONSOLE)
-            except:
-                subprocess.Popen(["xterm", sys.executable, "updater.py"])
+                subprocess.Popen([sys.executable, updater], creationflags=subprocess.CREATE_NEW_CONSOLE)
+            except AttributeError:
+                subprocess.Popen(["xterm", "-e", sys.executable + " " + updater])
                   
-            #maingame.exit()
+            maingame.exit()
         
     @staticmethod
     def action_exit(pos):
