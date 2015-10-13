@@ -5,6 +5,8 @@ import urllib2
 import achievements
 import dialogs
 import help_dialogs
+import subprocess
+import sys
 from images import Images
 from maingame import maingame
 import tsoliasgame
@@ -104,9 +106,10 @@ class MainMenuController(Controller):
             MenuItem("Level Selection", self.action_level_selection),
             MenuItem("Help", self.action_help),
             MenuItem("Options", self.action_options),
-            MenuItem("Download more levels", self.action_download),
             MenuItem("Achievements", self.action_achievements),
             MenuItem("Credits", self.action_credits),
+            MenuItem("Update PurpleFace!", self.action_update),
+            MenuItem("Download more levels", self.action_download),
             MenuItem("Exit", self.action_exit))
 
         # and create a button for each item in the list
@@ -231,6 +234,16 @@ class MainMenuController(Controller):
         if self.mode == 0:
             maingame.controller = CreditsController()
 
+    @staticmethod
+    def action_update(pos):
+        if Question("Update PurpleFace?", "PurpleFace will now exit to get updated.\nIs this OK?"):
+            try:
+                subprocess.Popen([sys.executable, "updater.py"], creation_flags=CREATE_NEW_CONSOLE)
+            except:
+                subprocess.Popen(["xterm", sys.executable, "updater.py"])
+                  
+            #maingame.exit()
+        
     @staticmethod
     def action_exit(pos):
         maingame.exit()
