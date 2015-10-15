@@ -36,7 +36,7 @@ class Moveable(tsoliasgame.Obj):
             self.start_shrink()  # start shrinking
             self.dead = True
             return True
-	
+
         # collision with Switch
         if SwitchEn.all.check_same_pos(self):
             SwitchEn.action()
@@ -52,7 +52,7 @@ class Moveable(tsoliasgame.Obj):
 
             for teleporter in TeleporterEn.all:
                 if not teleporter == other:
-                    teleporter.change_to(TeleporterActive, True)  # all other teleporters become active and wait for click
+                    teleporter.change_to(TeleporterActive, True)  # all other teleporters get active and wait for click
             return True
 
         return False
@@ -106,7 +106,7 @@ class Purple(Moveable):
         self.start_animation((32, 32), 1)
         maingame.maingame.levels.view.following = self
 
-    def update(self):
+    def update(self, **kwargs):
         if not Purple.paused:
             if self.check_grid((32, 32)):  # checks grid
 
@@ -207,7 +207,7 @@ class Purple(Moveable):
                     self.collided = int(maingame.maingame.get_fps() * 0.3)
                     # and set self.collided so that we dont allow keypresses to work for ~500ms
 
-	    self.collided -= 1
+        self.collided -= 1
 
         # HANDLE ANIMATION
         self.on_update_end()
@@ -221,7 +221,9 @@ class Purple(Moveable):
                     self.animation_enabled = False
                     self.__blink -= 1
 
-        tsoliasgame.Obj.update(self, not Purple.paused or "secret" in maingame.maingame.levels.current().description and self.position[0] <= 256)
+        tsoliasgame.Obj.update(self, not Purple.paused
+                               or "secret" in maingame.maingame.levels.current().description
+                               and self.position[0] <= 256)
 
     def die(self):
         # update death achievement
@@ -271,7 +273,7 @@ class Paint(tsoliasgame.Obj):
         tsoliasgame.Obj.__init__(self, Images.splatters_image, layer, position, usemask=False, addtolevel=addtolevel)
         self.start_animation((32, 32), start_image=random.randint(0, 7))
 
-    def update(self):
+    def update(self, **kwargs):
         pass  # no update needed
 
 
@@ -280,11 +282,12 @@ class Paint(tsoliasgame.Obj):
 
 class Rock(Moveable):
     def __init__(self, layer=1, position=(0, 0), addtolevel=None):
-        Moveable.__init__(self, Images.rock_image, layer, position, addtolevel=addtolevel, shrink_image=Images.rock_shrink_image)
+        Moveable.__init__(self, Images.rock_image, layer, position, addtolevel=addtolevel,
+                          shrink_image=Images.rock_shrink_image)
         self.radius = 16
         self.collided = False
 
-    def update(self):
+    def update(self, **kwargs):
         # almost same code with the Purple without having independent movement - only sliding ability
         if not (self.position == self.previous_pos or self.paused) or Mover.changed:
             if not self.collided and self.check_grid((32, 32)):  # checks grid
@@ -318,7 +321,7 @@ class Wood(tsoliasgame.Obj):
         tsoliasgame.Obj.__init__(self, Images.wood_image, layer, position, usemask=False, addtolevel=addtolevel)
         self.below = None  # contains the class of the object that is below...
 
-    def update(self):
+    def update(self, **kwargs):
         for other in self.level.group:  # checks every Obj
             if (not (self == other or other.__class__ == Exit or other.__class__ == Paint)) and \
                     pygame.sprite.collide_rect(self, other):  # if they collide
@@ -362,7 +365,7 @@ class Wall(tsoliasgame.Obj):
         self.tile = tile
         self.start_animation((32, 32), start_image=tile)
 
-    def update(self):
+    def update(self, **kwargs):
         pass  # no update needed
 
 
@@ -370,7 +373,7 @@ class Death(tsoliasgame.Obj):
     def __init__(self, layer=0, position=(0, 0), addtolevel=None):
         tsoliasgame.Obj.__init__(self, Images.death_image, layer, position, usemask=False, addtolevel=addtolevel)
 
-    def update(self):
+    def update(self, **kwargs):
         pass  # no update needed
 
 
@@ -393,6 +396,7 @@ class Exit(tsoliasgame.Obj):
 
 class Mover(tsoliasgame.Obj):
     changed = True
+    animspeed = 1
     direction = (0, 0)
 
     def __init__(self, image, layer=0, position=(0, 0), addtolevel=None):
@@ -400,8 +404,7 @@ class Mover(tsoliasgame.Obj):
 
         # animation init code - only on normal quality
         if settings.get("quality"):
-            animspeed = 1
-            self.start_animation((32, 32), animspeed)  # start animation
+            self.start_animation((32, 32), Mover.animspeed)  # start animation
 
             # if there is already another mover we need to synchronize with it however
             for mover in self.__class__.all:
@@ -443,10 +446,11 @@ class MoverR(Mover):
 
 class Switch(tsoliasgame.Obj):
     pressed = False  # if any switch was pressed
+
     def __init__(self, layer=0, position=(0, 0), addtolevel=None):
         tsoliasgame.Obj.__init__(self, None, layer, position, usemask=False, addtolevel=addtolevel)
 
-    def update(self):
+    def update(self, **kwargs):
         pass  # no update needed
 
 
@@ -483,7 +487,7 @@ class Ice(tsoliasgame.Obj):
     def __init__(self, layer=0, position=(0, 0), addtolevel=None):
         tsoliasgame.Obj.__init__(self, Images.ice_image, layer, position, usemask=False, addtolevel=addtolevel)
 
-    def update(self):
+    def update(self, **kwargs):
         pass  # no update needed
 
 
@@ -491,21 +495,23 @@ class TeleporterEn(tsoliasgame.Obj):
     def __init__(self, layer=0, position=(0, 0), addtolevel=None):
         tsoliasgame.Obj.__init__(self, Images.teleporter_image, layer, position, usemask=False, addtolevel=addtolevel)
 
-    def update(self):
+    def update(self, **kwargs):
         pass  # no update needed
 
 
 class TeleporterDis(tsoliasgame.Obj):
     def __init__(self, layer=0, position=(0, 0), addtolevel=None):
-        tsoliasgame.Obj.__init__(self, Images.teleporter_dis_image, layer, position, usemask=False, addtolevel=addtolevel)
+        tsoliasgame.Obj.__init__(self, Images.teleporter_dis_image, layer, position,
+                                 usemask=False, addtolevel=addtolevel)
 
-    def update(self):
+    def update(self, **kwargs):
         pass  # no update needed
 
 
 class TeleporterActive(tsoliasgame.Obj):
     def __init__(self, layer=0, position=(0, 0), addtolevel=None):
-        tsoliasgame.Obj.__init__(self, Images.teleporter_active_image, layer, position, usemask=False, addtolevel=addtolevel)
+        tsoliasgame.Obj.__init__(self, Images.teleporter_active_image, layer, position,
+                                 usemask=False, addtolevel=addtolevel)
         self.visible = True
         self.start_animation((64, 64), maingame.maingame.fps)
 
@@ -544,7 +550,7 @@ class Tutorial(tsoliasgame.Obj):
     messages = (
         "Welcome to PurpleFace! \n Use the arrow keys to move!",
         "Your purpose is to collect those\nsplatters of blue paint \nthat are scattered in the level.",
-        "To your right you can see a\nmover tile. They allow movement\nin one direction only.\nThey also double your speed temporarily,\nwhich can be useful sometimes!",
+        "To your right you can see a\nmover tile. They allow movement\nin one direction only.They also double your speed temporarily,\nwhich can be useful sometimes!",
         "Hmm, this mover is blocking\n your way. What will you do?",
         "Nice!\nNow you can see ice on the\n road ahead. Ice makes you slide.",
         "To your left there is a rock. You\ncan push rocks by moving towards them.\nThere are also some other tiles.\nStep on them to see what happens!",
@@ -558,9 +564,16 @@ class Tutorial(tsoliasgame.Obj):
         tsoliasgame.Obj.__init__(self, Images.ice_image, layer, position, visible=False, usemask=False, addtolevel=addtolevel)
         self.inactive = maingame.maingame.fps / 3
 
-    def update(self):
+    def update(self, **kwargs):
         if self.inactive > 0:
             self.inactive -= 1
+
+class WoodenBox(tsoliasgame.Obj):
+    def __init__(self, layer=0, position=(0, 0), addtolevel=None):
+        tsoliasgame.Obj.__init__(self, Images.wooden_box_image, layer, position, usemask=False, addtolevel=addtolevel)
+
+    def update(self, **kwargs):
+        pass  # no update needed
 
 
 def obj_from_tiles(layer, position, addtolevel, tile):
@@ -568,7 +581,7 @@ def obj_from_tiles(layer, position, addtolevel, tile):
     tmx_bindings = {1: Exit, 2: Wall, 3: Ice, 4: Death, 5: TeleporterEn, 6: Tutorial,
                     9: MoverU, 10: MoverD, 11: MoverL, 12: MoverR, 13: SwitchDis, 14: SwitchEn,
                     17: Wood, 19: WoodenBox, 25: Rock, 33: Purple, 34: Paint}
-                    
+
     if tile <= wall_tiles:
         return Wall(layer=layer, position=position, addtolevel=addtolevel, tile=tile - 1)
     else:
@@ -577,11 +590,3 @@ def obj_from_tiles(layer, position, addtolevel, tile):
             return obj_type(layer=layer, position=position, addtolevel=addtolevel)
         except KeyError:
             print(tile)
-
-
-class WoodenBox(tsoliasgame.Obj):
-    def __init__(self, layer=0, position=(0, 0), addtolevel=None):
-        tsoliasgame.Obj.__init__(self, Images.wooden_box_image, layer, position, usemask=False, addtolevel=addtolevel)
-
-    def update(self):
-        pass  # no update needed

@@ -81,8 +81,8 @@ class IntroController(Controller):
         # draw version string
         if self.frames > 2 * maingame.fps:
             tsoliasgame.draw_text(surface, fonts.font_20, maingame.version_string, 
-                                  ((maingame.size[0] + image.get_width()) / 2 - 100, (maingame.size[1] + image.get_height()) / 2),
-                                  tsoliasgame.colors.white, tsoliasgame.ALIGN_CENTER, tsoliasgame.ALIGN_CENTER)
+                                  (maingame.size[0] - 10, maingame.size[1] - 10),
+                                  tsoliasgame.colors.white, tsoliasgame.ALIGN_RIGHT, tsoliasgame.ALIGN_BOT)
         self.frames += 1
 
 
@@ -671,6 +671,13 @@ class OptionsController(Controller):
 
     def action_quality(self, pos):
         settings.set("quality", not settings.get("quality"))
+        quality = settings.get("quality")
+        for mover in objs.Mover.all:
+            if quality:
+                mover.visible = True
+                mover.start_animation((32, 32), objs.Mover.animspeed)
+            mover.current_image = 0
+            mover.update()
         self.fill_strings()
 
     def action_sfx(self, pos):
@@ -906,7 +913,6 @@ class GameplayController(Controller):
         img.fill(color)
         for cls in classes:
             for obj in cls.all:
-
                 obj.visible = True
                 obj.draw(img)
                 obj.visible = False

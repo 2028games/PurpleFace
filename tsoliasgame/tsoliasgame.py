@@ -61,7 +61,8 @@ def load_module(module_file):
     return module
 
 
-def draw_text(surface, font, text, position, color=colors.black, h_align=ALIGN_LEFT, v_align=ALIGN_TOP, antialiasing=True):
+def draw_text(surface, font, text, position, color=colors.black, h_align=ALIGN_LEFT, v_align=ALIGN_TOP,
+              antialiasing=True):
     lines = re.split(r"\n|\\n", text)  # splits when it finds \n char or "\n" as a 2-char string
     total_height = 0
     current_height = 0
@@ -98,14 +99,14 @@ class Group(pygame.sprite.LayeredDirty, object):
                 spr.draw(surface)
                 
     def collidepoint(self, point):
-        #checks if any obj collides with the specified point
+        # checks if any obj collides with the specified point
         for spr in self.sprites():
             if spr.rect.collidepoint(point):
                 return spr
         return None
     
     def check_same_pos(self, other):
-        #check if any obj of the current group is in the same position with the other obj
+        # check if any obj of the current group is in the same position with the other obj
         for spr in self.sprites():
             if spr.check_same_pos(other):
                 return spr
@@ -130,8 +131,7 @@ class Obj(pygame.sprite.DirtySprite):
     @property
     def previous_pos(self):
         return self.__previous_pos
-    
-        
+
     @property
     def visible(self):
         return self.__visible
@@ -193,9 +193,9 @@ class Obj(pygame.sprite.DirtySprite):
     
     def update(self, movement=True):
         if movement:
-	    # M O V E M E N T
-	    self.speed = vector2.add(self.speed, self.accel)
-	    self.add_pos(self.speed)
+            # M O V E M E N T
+            self.speed = vector2.add(self.speed, self.accel)
+            self.add_pos(self.speed)
         
         # A N I M A T I O N
         if self.animation_enabled:
@@ -217,8 +217,8 @@ class Obj(pygame.sprite.DirtySprite):
                     else:
                         self.current_image += 1  # change_image
                 
-                self.__animation_rect.x = self.image_size[0] * (self.current_image % self.__max_image_x)  # set the x of the rect
-                self.__animation_rect.y = self.image_size[1] * (self.current_image // self.__max_image_x)  # and the y
+                self.__animation_rect.x = self.image_size[0] * (self.current_image % self.__max_image_x)  # position of
+                self.__animation_rect.y = self.image_size[1] * (self.current_image // self.__max_image_x)  # rect
                 self.__animation_counter = self.change_steps  # reset counter
             else:
                 self.__animation_counter -= 1  # reduce counter by 1
@@ -250,7 +250,9 @@ class Obj(pygame.sprite.DirtySprite):
     def check_collision_ahead(self, group, points=32):
         """checks whether a collision with the specified group of objects will happen ahead"""
         try:
-            other = group.collidepoint(vector2.add(self.get_center(), vector2.multiply(points / vector2.get_length(self.speed), self.speed)))
+            other = \
+                group.collidepoint(vector2.add(self.get_center(),
+                                               vector2.multiply(points / vector2.get_length(self.speed), self.speed)))
         except ZeroDivisionError:
             return None
         if self == other:
@@ -282,12 +284,12 @@ class Obj(pygame.sprite.DirtySprite):
         
     def destroy(self):
         """destroys the Obj - poor Obj!"""
-        #it gets removed from every group it was added
+        # it gets removed from every group it was added
         for group in self.groups:
             group.remove(self)
             
-    def start_animation(self, image_size, change_steps=1, start_image=0, max_image_count=1000, animation_reversed=False
-                        , end_action=ANIMATION_RESET):
+    def start_animation(self, image_size, change_steps=1, start_image=0, max_image_count=1000, animation_reversed=False,
+                        end_action=ANIMATION_RESET):
         """use that to begin an animation on the defined object sprite
         it actually initializes all the variables needed for the animation"""
         self.rect.width = image_size[0]
@@ -302,8 +304,8 @@ class Obj(pygame.sprite.DirtySprite):
         self.end_action = end_action
         self.animation_enabled = True
         
-        #finally set the current rect to that of the beginning image
-        self.__animation_rect.x = self.image_size[0] * (self.current_image % self.__max_image_x)  # set the x of the rect
+        # finally set the current rect to that of the beginning image
+        self.__animation_rect.x = self.image_size[0] * (self.current_image % self.__max_image_x)  # set x of the rect
         self.__animation_rect.y = self.image_size[1] * (self.current_image // self.__max_image_x)  # and the y
 
 
@@ -318,7 +320,8 @@ class View(object):
     def update(self):
         if self.surface:
             if self.following:
-                self.position = vector2.substract(self.following.get_center(), vector2.multiply(0.5, self.surface.get_size()))
+                self.position = vector2.substract(self.following.get_center(),
+                                                  vector2.multiply(0.5, self.surface.get_size()))
             
             if self.limit_position:
                 bound = self.level.size[0] - self.surface.get_width()
@@ -357,7 +360,7 @@ class Level(object):
         self.title = self.description = ""
         view.level = self
         
-        #load tmx
+        # load tmx
         self.source_tmx = source_tmx
         if not source_tmx == "":
             self.load_tmx(source_tmx, properties_only)
@@ -369,7 +372,7 @@ class Level(object):
         if not root.tag.lower() == "map":
             return 1
         
-        #extract properties to find title, description
+        # extract properties to find title, description
         properties = root.find("properties")
         for propertyy in properties:
             name = propertyy.get("name")
@@ -381,7 +384,7 @@ class Level(object):
         if properties_only:
             return 0
                 
-        #get map size
+        # get map size
         map_size = (int(root.get("width")), int(root.get("height")))
         self.tile_size = (int(root.get("tilewidth")), int(root.get("tileheight")))
         self.size = (map_size[0] * self.tile_size[0], map_size[1] * self.tile_size[1])
@@ -399,7 +402,7 @@ class Level(object):
                 for i in range(map_size[0] * map_size[1]):
                     if not tiles[i] == "0":
                         module.obj_from_tiles(layer, [self.tile_size[0] * (i % map_size[0]),
-                                                         self.tile_size[1] * (i // map_size[0])], self, int(tiles[i]))
+                                                      self.tile_size[1] * (i // map_size[0])], self, int(tiles[i]))
                     
     def add_obj(self, obj, layer=0):
         obj.level = self
@@ -577,7 +580,7 @@ class Game(object):
                 self.update()
             self.draw(drawing_surface)
                 
-            self.__step_time = self.__clock.tick(self.fps) #limits fps to desired
+            self.__step_time = self.__clock.tick(self.fps)  # limits fps to desired
             
     def event_handling(self):
         """event handling: does almost nothing by default - TO BE EXTENDED IN AN ACTUAL GAME"""

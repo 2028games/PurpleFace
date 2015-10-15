@@ -20,6 +20,11 @@ Paulius Jurgelevicius
 Thanasis Katsios
 
 h:Testing
+Elena Marinopoulou
+Elina Marinopoulou
+Filippos Konidaris
+Giorgos Kikatos
+Nikos Apostolakis
 Panos Marinopoulos
 Stefanos Argyriou
 Stergios Souftas
@@ -36,6 +41,8 @@ OpenGameArt.org
 GIMP
 Paint.NET
 Audacity
+
+And all of the of open source community
 
 
 If I forgot anyone please remind me :)

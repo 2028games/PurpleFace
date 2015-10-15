@@ -56,8 +56,8 @@ class MainGame(tsoliasgame.Game):
         maingame = self  # reference to be used by other objects
         
         #some info about the game
-        self.version = 902
-        self.version_string = "Psit Ksereis Beta Edition"
+        self.version = 1000
+        self.version_string = "v1.0.0"
 
         # make main levelgroup
         levels = MultiLevelGroup(tsoliasgame.View((0, 0)))  # main level group
