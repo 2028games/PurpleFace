@@ -85,7 +85,7 @@ achievements = collections.OrderedDict([
     ("paint_collected", Achievement(settings.get("paint_collected"), lambda current, x: current >= x,
                                     (AchievementLevel(50, "Novice Collector", "Collect 50 paint splatters", Images.medal1_image),
                                      AchievementLevel(100, "Average Collector", "Collect 100 paint splatters", Images.medal2_image),
-                                     AchievementLevel(200, "Expert Collector", "Collect 200 paint splatters", Images.medal3_image)))),
+                                     AchievementLevel(300, "Expert Collector", "Collect 300 paint splatters", Images.medal3_image)))),
 
     ("times_restarted", Achievement(settings.get("times_restarted"), lambda current, x: current >= x,
                                     (AchievementLevel(10, "A Few Fails", "Restart a total of 10 times", Images.medal1_image),
@@ -104,8 +104,8 @@ achievements = collections.OrderedDict([
 
     ("total_dist", Achievement(settings.get("total_dist"), lambda current, x: current >= x,
                                (AchievementLevel(4096, "A few pixels", "Travel a total of 4096 pixels", Images.medal1_image),
-                                AchievementLevel(16000, "More pixels", "Travel a total of 16000 pixels", Images.medal2_image),
-                                AchievementLevel(100000, "Round the pixel earth!", "Travel a total of 100000 pixels", Images.medal3_image)))),
+                                AchievementLevel(32000, "More pixels", "Travel a total of 32000 pixels", Images.medal2_image),
+                                AchievementLevel(200000, "Round the pixel earth!", "Travel a total of 200000 pixels", Images.medal3_image)))),
 
     ("reference", Achievement(settings.get("reference"), lambda current, x: current >= x,
                               (AchievementLevel(1, "Movie maniac", "Discover a movie reference", Images.medal_reference_image),))),
